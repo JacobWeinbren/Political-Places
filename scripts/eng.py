@@ -51,7 +51,7 @@ if not os.path.exists(outputdir + 'eng/eng_mob.csv'):
 		readSheet('input/mob_eng/msoalsoa_1216.xlsx', 'LSOA Quintile', 0, 2, writer)
 
 #OAC
-if not os.path.exists(outputdir + 'eng/eng_aoc.csv'):
+if not os.path.exists(outputdir + 'eng/eng_oac.csv'):
 	with open(outputdir + 'eng/eng_oac.csv', 'w') as file: 
 		writer = createcsv(file)
 		readSheet('input/uk_cen/oac_v2.xlsx', '2011 OAC Clusters', 0, 9, writer)
