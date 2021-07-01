@@ -8,6 +8,12 @@ Regarding the 4 UK nations, I have tried to pick datasets that are carried out a
 
 Running ```find . -size +100M | cat >> .gitignore```, to filter out larger files.
 
+## Install
+
+1. Run ```pip install -r requirements.txt```
+
+2. Run ```python download.py``` to download files to ```input``` dir
+
 ## Boundaries 
 
 Reference boundaries, full resolution. Converted to geojson in QGIS.
