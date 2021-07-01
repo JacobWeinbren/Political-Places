@@ -183,6 +183,7 @@ download(
 	"UK Population 2009"
 )
 if not os.path.exists(inputdir + "pop_old/2007-2010.xlsx"):
+	print('Converting to xlsx')
 	df = pd.read_excel(
 		inputdir + "pop_old/SAPE8DT1b-LSOA-syoa-unformatted-persons-mid2007-to-mid2010.xls", 
 		sheet_name="Mid-2009",
