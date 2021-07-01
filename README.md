@@ -53,7 +53,7 @@ Reference boundaries, full resolution. Converted to geojson in QGIS.
 
 ## Shapefiles
 | Name | Year | Type | Link | Folder id | 
-|-|:-:|:-:|:-:|:-:|:-:|
+|-|:-:|:-:|:-:|:-:|
 | Current Constituency Boundaries | 2021 | Constituencies | [Link](https://osdatahub.os.uk/downloads/open/BoundaryLine) | con_old | Access dir: ```GB``` |
 | 2023 Constituency Boundaries | 2021 | Constituencies | [Link](https://boundarycommissionforengland.independent.gov.uk/2023-review/) | con_new | 
 | 2008 Constituency Boundaries NI | 2008 | Constituencies | [Link](https://data.nicva.org/dataset/administrative-land-boundaries/resource/15ef7156-d7e5-48cb-bc08-b0fe6f3e843d) | con_ni | 
@@ -64,7 +64,7 @@ Reference boundaries, full resolution. Converted to geojson in QGIS.
 
 ## Data
 | Name | Year | Type | Link | Folder id | 
-|-|:-:|:-:|:-:|:-:|:-:|
+|-|:-:|:-:|:-:|:-:|
 | England Deprivation Index | 2019 | Deprivation | [Link](https://www.gov.uk/government/statistics/english-indices-of-deprivation-2019) | dep_eng |  |
 | England Social Mobility Index | 2021 | Mobility | [Link](https://www.officeforstudents.org.uk/data-and-analysis/young-participation-by-area/get-the-area-based-measures-data/) | mob_eng |  |
 | UK Wide Social Mobility Index | 2020 | Mobility | [Link](https://www.officeforstudents.org.uk/data-and-analysis/young-participation-by-area/get-the-area-based-measures-data/) | mob_uk |  |
