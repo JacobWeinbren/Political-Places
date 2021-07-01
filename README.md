@@ -41,11 +41,9 @@ Reference boundaries, full resolution. Converted to geojson in QGIS.
 | Scotland Deprivation Index | 2020 | Deprivation | [Link](https://www.gov.scot/publications/scottish-index-of-multiple-deprivation-2020v2-postcode-look-up/) | dp_sco |  |
 | England Social Mobility Index | 2021 | Mobility | [Link](https://www.officeforstudents.org.uk/data-and-analysis/young-participation-by-area/get-the-area-based-measures-data/) | mob_eng |  |
 | UK Wide Social Mobility Index | 2020 | Mobility | [Link](https://www.officeforstudents.org.uk/data-and-analysis/young-participation-by-area/get-the-area-based-measures-data/) | mob_uk |  |
-| Census Area Classification OAC Clusters | 2011 | Classification | [Link](https://www.ons.gov.uk/methodology/geography/geographicalproducts/areaclassifications/2011areaclassifications/datasets) | uk_cen |  |
-| LSOA Population old | 2009 | Population | [Link](https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/lowersuperoutputareamidyearpopulationestimates) | uk_pop | Removed unnecessary years + converted to xlsx. From file ```SAPE8DT1b-LSOA-syoa-unformatted-persons-mid2007-to-mid2010.xls``` |
-| LSOA Population new | 2019 | Population | [Link](https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/lowersuperoutputareamidyearpopulationestimates) | uk_pop |
-
-
+| Census Area Classification OAC Clusters | 2011 | Classification | [Link](https://www.ons.gov.uk/methodology/geography/geographicalproducts/areaclassifications/2011areaclassifications/datasets) | cen_uk |  |
+| LSOA Population old | 2009 | Population | [Link](https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/lowersuperoutputareamidyearpopulationestimates) | pop_old |
+| LSOA Population new | 2019 | Population | [Link](https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/lowersuperoutputareamidyearpopulationestimates) | pop_new |
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)

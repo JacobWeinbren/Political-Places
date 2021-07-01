@@ -6,6 +6,9 @@ from shutil import copyfile
 
 headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
 
+if not os.path.exists('input'):
+	os.makedirs('input')
+
 def retrieve(url, fname):
     resp = requests.get(url, headers=headers, stream=True)
     total = int(resp.headers.get('content-length', 0))
@@ -75,11 +78,11 @@ download(
 	"Northern Ireland Super Output Boundaries"
 )
 
-#GB Constituencies Old
+#GB Constituencies 2019
 download(
 	"con_gb", 
 	"https://api.os.uk/downloads/v1/products/BoundaryLine/downloads?area=GB&format=ESRI%C2%AE+Shapefile&redirect", 
-	"GB Constituencies Old"
+	"GB Constituencies 2019"
 )
 if os.path.exists('input/con_old/Data'):
 	copyfile("input/con_old/Data/GB/westminster_const_region.dbf", "input/con_old/westminster_const_region.dbf")
@@ -93,14 +96,14 @@ if os.path.exists('input/con_old/Data'):
 download(
 	"con_eng", 
 	"https://boundarycommissionforengland.independent.gov.uk/wp-content/uploads/2021/06/2021_06_08_Initial_Proposals_England_v2-shapefile.zip", 
-	"England Constituencies New"
+	"England Constituencies 2023"
 )
 
-#NI Constituencies Old
+#NI Constituencies 2019
 download(
 	"con_ni", 
 	"https://data.nicva.org/sites/default/files/pc2008_clipped.zip", 
-	"NI Constituencies"
+	"NI Constituencies 2019 (Order 2008)"
 )
 
 #Wales Deprivation
@@ -132,7 +135,7 @@ download(
 download(
 	"dep_sco", 
 	"https://www.gov.scot/binaries/content/documents/govscot/publications/statistics/2020/01/scottish-index-of-multiple-deprivation-2020-postcode-look-up-file/documents/simd-2020-postcode-lookup-v5/simd-2020-postcode-lookup-v5/govscot%3Adocument/SIMD%2B2020v2%2B-%2Bpostcode%2Blookup%25232.xlsx", 
-	"Scotland Ireland Deprivation",
+	"Scotland Deprivation",
 	"xlsx"
 )
 
@@ -142,4 +145,33 @@ download(
 	"https://www.officeforstudents.org.uk/media/633159de-49c4-4dd9-b543-575442704fd6/msoalsoa_1216.xlsx", 
 	"England Mobility",
 	"xlsx"
+)
+
+#UK Mobility
+download(
+	"mob_uk", 
+	"https://www.officeforstudents.org.uk/media/f3c87ca7-c37d-4822-8904-54b87b1d304c/polar4_dataset_september2020.xlsx", 
+	"UK Mobility",
+	"xlsx"
+)
+
+#UK Classification
+download(
+	"cen_uk", 
+	"https://www.ons.gov.uk/file?uri=/methodology/geography/geographicalproducts/areaclassifications/2011areaclassifications/datasets/2011oacclustersandnamesexcelv2.zip", 
+	"UK Classification"
+)
+
+#UK Population 2009
+download(
+	"pop_old", 
+	"https://www.ons.gov.uk/file?uri=%2fpeoplepopulationandcommunity%2fpopulationandmigration%2fpopulationestimates%2fdatasets%2flowersuperoutputareamidyearpopulationestimates%2fmid2002tomid2011persons/rftlsoaunformattedtablepersons.zip", 
+	"UK Population 2009"
+)
+
+#UK Population 2019
+download(
+	"pop_new", 
+	"https://www.ons.gov.uk/file?uri=%2fpeoplepopulationandcommunity%2fpopulationandmigration%2fpopulationestimates%2fdatasets%2flowersuperoutputareamidyearpopulationestimates%2fmid2019sape22dt2/sape22dt2mid2019lsoasyoaestimatesunformatted.zip", 
+	"UK Population 2019"
 )
