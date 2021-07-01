@@ -12,7 +12,7 @@ Navigating the UK constituencies can be tricky, but in every place is a fascinat
 
 ## Install
 
-1. cd into the dir
+1. cd into the github repo clone
 
 2. Run ```pip install -r requirements.txt```
 
