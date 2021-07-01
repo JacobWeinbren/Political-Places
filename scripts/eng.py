@@ -42,19 +42,19 @@ England Wide Data
 if not os.path.exists(outputdir + 'eng/eng_dep.csv'):
 	with open(outputdir + 'eng/eng_dep.csv', 'w') as file: 
 		writer = createCsv(file)
-		readSheet(inputdir + 'dep_eng/File_1_-_IMD2019_Index_of_Multiple_Deprivation.xlsx', 'IMD2019', 0, 4, writer) 
+		readSheet(inputdir + 'dep_eng/England Deprivation.xlsx', 'IMD2019', 0, 4, writer) 
 
 #TUNDRA
 if not os.path.exists(outputdir + 'eng/eng_mob.csv'):
 	with open(outputdir + 'eng/eng_mob.csv', 'w') as file: 
 		writer = createCsv(file)
-		readSheet(inputdir + 'mob_eng/msoalsoa_1216.xlsx', 'LSOA Quintile', 0, 2, writer)
+		readSheet(inputdir + 'mob_eng/England Mobility.xlsx', 'LSOA Quintile', 0, 2, writer)
 
 #OAC
 if not os.path.exists(outputdir + 'eng/eng_oac.csv'):
 	with open(outputdir + 'eng/eng_oac.csv', 'w') as file: 
 		writer = createCsv(file)
-		readSheet(inputdir + 'uk_cen/oac_v2.xlsx', '2011 OAC Clusters', 0, 9, writer)
+		readSheet(inputdir + 'cen_uk/2011 OAC Clusters and Names Excel v2.xlsx', '2011 OAC Clusters', 0, 9, writer)
 
 #Pop
 if not os.path.exists(outputdir + 'eng/eng_pop.csv'):

@@ -77,9 +77,6 @@ def addData(shapefile, injson, workbook, worksheet, id_col, data_col, name, outj
 		else:
 			data_copy['features'][index]['properties'][name] = None
 
-		if index % 1000 == 0:
-			print("Line", index)
-
 	print("Writing to", outjson, "\n")
 	with open(outjson, "w") as file:
 	    ujson.dump(data_copy, file, indent=2, sort_keys=True)

@@ -176,6 +176,13 @@ download(
 	"UK Classification"
 )
 
+#UK Classification
+download(
+	"bui_uk", 
+	"https://api.os.uk/downloads/v1/products/VectorMapDistrict/downloads?area=GB&format=GeoPackage&redirect", 
+	"UK Buildings"
+)
+
 #UK Population 2009
 download(
 	"pop_old", 
