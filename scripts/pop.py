@@ -13,7 +13,7 @@ def pop():
 	old = readSheet(inputdir + 'pop_old/2007-2010.xlsx', 'Sheet1', 0, 3) 
 	new = readSheet(inputdir + 'pop_new/SAPE22DT2-mid-2019-lsoa-syoa-estimates-unformatted.xlsx', 'Mid-2019 Persons', 0, 6, skipextra=4) 
 
-	with open(outputdir + 'pop.csv', 'w') as file:
+	with open(outputdir + 'eng/pop.csv', 'w') as file:
 		writer = csv.writer(file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
 		writer.writerow(['LSOA', 'Population Change %'])
 
