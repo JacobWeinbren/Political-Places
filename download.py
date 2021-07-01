@@ -1,22 +1,40 @@
-import os, zipfile, shutil
-import urllib.request
+import os, zipfile, shutil, requests, mimetypes
+from urllib.parse import urlparse 
+from tqdm import tqdm
 from progressist import ProgressBar
 from shutil import copyfile
 
-def download(directory, filename, url, name, unzip=False):
+headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
+
+def retrieve(url, fname):
+    resp = requests.get(url, headers=headers, stream=True)
+    total = int(resp.headers.get('content-length', 0))
+    with open(fname, 'wb') as file, tqdm(
+            desc=fname,
+            total=total,
+            unit='iB',
+            unit_scale=True,
+            unit_divisor=1024,
+    ) as bar:
+        for data in resp.iter_content(chunk_size=1024):
+            size = file.write(data)
+            bar.update(size)
+
+def download(directory, url, name, ext="zip"):
 	
 	directory = "input/"+directory
-	loc = directory+"/"+filename
+	loc = directory+"/"+name
+	loc = loc + "." + ext
 
 	if not os.path.exists(directory):
 		os.makedirs(directory)
 
+	if len(os.listdir(directory)) == 0:
 		print("Downloading", name)
-		bar = ProgressBar(template="Download |{animation}| {done:B}/{total:B}")
-		urllib.request.urlretrieve(url, loc, reporthook=bar.on_urlretrieve)
+		retrieve(url, loc)
 
-		if unzip:
-			
+		
+		if ext == 'zip':
 			with zipfile.ZipFile(loc,"r") as zip_ref:
 				zip_ref.extractall(directory+"/")
 
@@ -25,59 +43,103 @@ def download(directory, filename, url, name, unzip=False):
 #LSOA
 download(
 	"bd_lsoa", 
-	"lsoa.zip", 
 	"https://borders.ukdataservice.ac.uk/ukborders/easy_download/prebuilt/shape/England_lsoa_2011.zip", 
-	"LSOA Boundaries", 
-	True
+	"LSOA Boundaries"
 )
 
 #MSOA
 download(
 	"bd_msoa", 
-	"msoa.zip", 
 	"https://borders.ukdataservice.ac.uk/ukborders/easy_download/prebuilt/shape/England_msoa_2011.zip", 
-	"MSOA Boundaries", 
-	True
+	"MSOA Boundaries"
 )
 
 #OA
 download(
 	"bd_oa", 
-	"os.zip", 
 	"https://borders.ukdataservice.ac.uk/ukborders/easy_download/prebuilt/shape/England_oa_2011.zip", 
-	"OA Boundaries", 
-	True
+	"OA Boundaries"
 )
 
-#Data Zones
+#Data Zones Scotland
 download(
-	"bd_dz", 
-	"dz.zip", 
+	"bd_sco", 
 	"https://www.gov.scot/binaries/content/documents/govscot/publications/statistics/2018/10/simd-2011-data-zone-boundaries/documents/2011-data-zone-boundaries/2011-data-zone-boundaries/govscot%3Adocument/SG_SIMD_2016.zip", 
-	"DataZone Boundaries", 
-	True
+	"DataZone Boundaries"
 )
 
 #Data Zones
 download(
 	"bd_ni", 
-	"ni.zip", 
 	"https://www.nisra.gov.uk/sites/nisra.gov.uk/files/publications/SOA2011_Esri_Shapefile_0.zip", 
-	"Northern Ireland Super Output Boundaries", 
-	True
+	"Northern Ireland Super Output Boundaries"
 )
 
-#GB Constituencies
+#GB Constituencies Old
 download(
-	"con_old", 
-	"con_old.zip", 
+	"con_gb", 
 	"https://api.os.uk/downloads/v1/products/BoundaryLine/downloads?area=GB&format=ESRI%C2%AE+Shapefile&redirect", 
-	"GB Constituencies", 
-	True
+	"GB Constituencies Old"
 )
-copyfile("input/con_old/Data/GB/westminster_const_region.dbf", "input/con_old/westminster_const_region.dbf")
-copyfile("input/con_old/Data/GB/westminster_const_region.prj", "input/con_old/westminster_const_region.prj")
-copyfile("input/con_old/Data/GB/westminster_const_region.shp", "input/con_old/westminster_const_region.shp")
-copyfile("input/con_old/Data/GB/westminster_const_region.shx", "input/con_old/westminster_const_region.shx")
-shutil.rmtree("input/con_old/Data")
-shutil.rmtree("input/con_old/Doc")
+if os.path.exists('input/con_old/Data'):
+	copyfile("input/con_old/Data/GB/westminster_const_region.dbf", "input/con_old/westminster_const_region.dbf")
+	copyfile("input/con_old/Data/GB/westminster_const_region.prj", "input/con_old/westminster_const_region.prj")
+	copyfile("input/con_old/Data/GB/westminster_const_region.shp", "input/con_old/westminster_const_region.shp")
+	copyfile("input/con_old/Data/GB/westminster_const_region.shx", "input/con_old/westminster_const_region.shx")
+	shutil.rmtree("input/con_old/Data")
+	shutil.rmtree("input/con_old/Doc")
+
+#England Constituencies New
+download(
+	"con_eng", 
+	"https://boundarycommissionforengland.independent.gov.uk/wp-content/uploads/2021/06/2021_06_08_Initial_Proposals_England_v2-shapefile.zip", 
+	"England Constituencies New"
+)
+
+#NI Constituencies Old
+download(
+	"con_ni", 
+	"https://data.nicva.org/sites/default/files/pc2008_clipped.zip", 
+	"NI Constituencies"
+)
+
+#Wales Deprivation
+download(
+	"dep_eng", 
+	"https://assets.publishing.service.gov.uk/government/uploads/system/uploads/attachment_data/file/833970/File_1_-_IMD2019_Index_of_Multiple_Deprivation.xlsx", 
+	"England Deprivation",
+	"xlsx"
+)
+
+
+#Wales Deprivation
+download(
+	"dep_wal", 
+	"https://statswales.gov.wales/Download/File?fileId=570", 
+	"Wales Deprivation",
+	"ods"
+)
+
+#NI Deprivation
+download(
+	"dep_ni", 
+	"https://www.nisra.gov.uk/sites/nisra.gov.uk/files/publications/NIMDM17_SOAresults.xls", 
+	"Northern Ireland Deprivation",
+	"xls"
+)
+
+#Scotland Deprivation
+download(
+	"dep_sco", 
+	"https://www.gov.scot/binaries/content/documents/govscot/publications/statistics/2020/01/scottish-index-of-multiple-deprivation-2020-postcode-look-up-file/documents/simd-2020-postcode-lookup-v5/simd-2020-postcode-lookup-v5/govscot%3Adocument/SIMD%2B2020v2%2B-%2Bpostcode%2Blookup%25232.xlsx", 
+	"Scotland Ireland Deprivation",
+	"xlsx"
+)
+
+#England Mobility
+download(
+	"mob_eng", 
+	"https://www.officeforstudents.org.uk/media/633159de-49c4-4dd9-b543-575442704fd6/msoalsoa_1216.xlsx", 
+	"England Mobility",
+	"xlsx"
+)
