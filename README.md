@@ -2,15 +2,21 @@
 
 Navigating the UK constituencies can be tricky, but in every place is a fascinating story of people and history, economy and culture coming together. If people have any contributions or queries - they can email me or the TSR and I will try and get back!
 
-Regarding the 4 UK nations, I have tried to pick datasets that are carried out across them.
+## Notes
 
-2023 Boundary Review for NI comes out in [autumn](https://www.boundarycommission.org.uk/2023-review-parliamentary-constituencies).
+- Regarding the 4 UK nations, I have tried to pick datasets that are carried out across them.
+
+- 2023 Boundary Review for NI comes out in [autumn](https://www.boundarycommission.org.uk/2023-review-parliamentary-constituencies).
+
+- Uses pipreqs for requirements.txt
 
 ## Install
 
-1. Run ```pip install -r requirements.txt```
+1. cd into the dir
 
-2. Run ```python download.py``` to download files to ```input``` dir
+2. Run ```pip install -r requirements.txt```
+
+3. Run ```python scripts/download.py``` to download files to ```input``` dir
 
 ## Boundaries 
 

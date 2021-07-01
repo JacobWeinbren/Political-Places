@@ -2,11 +2,13 @@
 
 Guides for all other nations coming, when we do articles on them.
 
-3. Run ```python addjson.py``` to add data to geojson maps
+1. cd into the dir
 
-4. Run ```python eng_wide.py``` to get England wide data, then add this data to ArcGIS
+2. Run ```python eng.py``` to add data to geojson maps
 
-5. 
+3. Run ```python eng_wide.py``` to get England wide data, then add this data to ArcGIS
+
+4. 
     a. This bit is more tricky - open ArcGIS, then run JSON to Features for Mob and Dep geojson files.
 
     b. Select your constituencies and then export the features through data -> export features.

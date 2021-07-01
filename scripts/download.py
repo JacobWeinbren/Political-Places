@@ -3,11 +3,22 @@ from urllib.parse import urlparse
 from tqdm import tqdm
 from progressist import ProgressBar
 from shutil import copyfile
+from get_root import inputdir, outputdir
+import pandas as pd
 
+"""
+Downloads project files
+"""
+
+#So it is ok to download new constituencies, using a header
 headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
 
-if not os.path.exists('input'):
-	os.makedirs('input')
+if not os.path.exists(inputdir):
+	os.makedirs(inputdir)
+
+"""
+Progress bar
+"""
 
 def retrieve(url, fname):
     resp = requests.get(url, headers=headers, stream=True)
@@ -23,10 +34,13 @@ def retrieve(url, fname):
             size = file.write(data)
             bar.update(size)
 
+"""
+Download file function
+"""
 def download(directory, url, name, ext="zip"):
 	
-	directory = "input/"+directory
-	loc = directory+"/"+name
+	directory = inputdir + directory
+	loc = directory + "/" + name
 	loc = loc + "." + ext
 
 	if not os.path.exists(directory):
@@ -84,13 +98,13 @@ download(
 	"https://api.os.uk/downloads/v1/products/BoundaryLine/downloads?area=GB&format=ESRI%C2%AE+Shapefile&redirect", 
 	"GB Constituencies 2019"
 )
-if os.path.exists('input/con_old/Data'):
-	copyfile("input/con_old/Data/GB/westminster_const_region.dbf", "input/con_old/westminster_const_region.dbf")
-	copyfile("input/con_old/Data/GB/westminster_const_region.prj", "input/con_old/westminster_const_region.prj")
-	copyfile("input/con_old/Data/GB/westminster_const_region.shp", "input/con_old/westminster_const_region.shp")
-	copyfile("input/con_old/Data/GB/westminster_const_region.shx", "input/con_old/westminster_const_region.shx")
-	shutil.rmtree("input/con_old/Data")
-	shutil.rmtree("input/con_old/Doc")
+if os.path.exists(inputdir + 'con_old/Data'):
+	copyfile(inputdir + "con_old/Data/GB/westminster_const_region.dbf", inputdir + "con_old/westminster_const_region.dbf")
+	copyfile(inputdir + "con_old/Data/GB/westminster_const_region.prj", inputdir + "con_old/westminster_const_region.prj")
+	copyfile(inputdir + "con_old/Data/GB/westminster_const_region.shp", inputdir + "con_old/westminster_const_region.shp")
+	copyfile(inputdir + "con_old/Data/GB/westminster_const_region.shx", inputdir + "con_old/westminster_const_region.shx")
+	shutil.rmtree(inputdir + "con_old/Data")
+	shutil.rmtree(inputdir + "con_old/Doc")
 
 #England Constituencies New
 download(
@@ -168,6 +182,13 @@ download(
 	"https://www.ons.gov.uk/file?uri=%2fpeoplepopulationandcommunity%2fpopulationandmigration%2fpopulationestimates%2fdatasets%2flowersuperoutputareamidyearpopulationestimates%2fmid2002tomid2011persons/rftlsoaunformattedtablepersons.zip", 
 	"UK Population 2009"
 )
+if not os.path.exists(inputdir + "pop_old/2007-2010.xlsx"):
+	df = pd.read_excel(
+		inputdir + "pop_old/SAPE8DT1b-LSOA-syoa-unformatted-persons-mid2007-to-mid2010.xls", 
+		sheet_name="Mid-2009",
+		header=None
+	)
+	df.to_excel(inputdir + "pop_old/2007-2010.xlsx", index=False, header=False)
 
 #UK Population 2019
 download(
