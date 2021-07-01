@@ -7,7 +7,6 @@ from get_root import inputdir, outputdir
 """
 Aggregates population data
 """
-
 def pop():
 	print("Collecting pop data")
 	old = readSheet(inputdir + 'pop_old/2007-2010.xlsx', 'Sheet1', 0, 3) 
