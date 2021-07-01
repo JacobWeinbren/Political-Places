@@ -12,9 +12,9 @@ Running ```find . -size +100M | cat >> .gitignore```, to filter out larger files
 
 Guides for all other nations coming, when we do articles on them.
 
-1. Run ```pip install ujson openpyxl pyexcel pyexcel-xlsx```
+1. Run ```pip install -r requirements.txt```
 
-2. Run ```python pop.py``` to add population data
+2. Run ```python download.py``` to download files to input
 
 3. Run ```python addjson.py``` to add data to geojson maps
 
@@ -48,8 +48,8 @@ Reference boundaries, full resolution. Converted to geojson in QGIS.
 | LSOA | 2011 | [Link](https://borders.ukdataservice.ac.uk/easy_download_data.html?data=England_lsoa_2011https://borders.ukdataservice.ac.uk/easy_download_data.html?data=England_lsoa_2011) | bd_lsoa |
 | MSOA | 2011 | [Link](https://borders.ukdataservice.ac.uk/easy_download_data.html?data=England_msoa_2011) | bd_lsoa |
 | OA | 2011 | [Link](https://borders.ukdataservice.ac.uk/easy_download_data.html?data=England_oa_2011) | bd_oa |
-| Scottish Data Zones | 2011 | [Link](https://www.gov.scot/publications/simd-2011-data-zone-boundaries/)
-| NI Super Output Boundaries | 2011 | [Link](https://www.nisra.gov.uk/publications/super-output-area-boundaries-gis-format)
+| Scottish Data Zones | 2011 | [Link](https://www.gov.scot/publications/simd-2011-data-zone-boundaries/) | bd_dz | 
+| NI Super Output Boundaries | 2011 | [Link](https://www.nisra.gov.uk/publications/super-output-area-boundaries-gis-format) | bd_ni |
 
 ## Shapefiles
 | Name | Year | Type | Link | Folder id | Notes |
