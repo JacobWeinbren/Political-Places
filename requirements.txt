@@ -1,0 +1,9 @@
+et-xmlfile==1.1.0
+lml==0.1.0
+openpyxl==3.0.7
+progressist==0.1.0
+pyexcel==0.6.6
+pyexcel-io==0.6.4
+pyexcel-xlsx==0.6.0
+texttable==1.6.3
+ujson==4.0.2
