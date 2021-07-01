@@ -2,10 +2,6 @@
 
 Guides for all other nations coming, when we do articles on them.
 
-1. Run ```pip install -r requirements.txt```
-
-2. Run ```python download.py``` to download files to input
-
 3. Run ```python addjson.py``` to add data to geojson maps
 
 4. Run ```python eng_wide.py``` to get England wide data, then add this data to ArcGIS

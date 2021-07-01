@@ -6,8 +6,6 @@ Regarding the 4 UK nations, I have tried to pick datasets that are carried out a
 
 2023 Boundary Review for NI comes out in [autumn](https://www.boundarycommission.org.uk/2023-review-parliamentary-constituencies).
 
-Running ```find . -size +100M | cat >> .gitignore```, to filter out larger files.
-
 ## Install
 
 1. Run ```pip install -r requirements.txt```
