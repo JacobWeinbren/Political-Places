@@ -2,9 +2,9 @@
 
 Guides for all other nations coming, when we do articles on them.
 
-1. cd into the dir root ```Political-Places```
+1. ```cd``` into the dir root ```Political-Places```
 
-2. Run ```python eng.py``` to add data to geojson maps and collect csv files to output in ```/eng```
+2. Run ```python scripts/eng.py``` to add data to geojson maps and collect csv files to ```output/eng/```
 
 3. 
     a. This bit is more tricky - open ArcGIS, then run ```JSON to Features``` for Mobility and Deprivation ```.geojson``` files.
