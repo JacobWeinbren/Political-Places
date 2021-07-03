@@ -18,6 +18,8 @@ Navigating the UK constituencies can be tricky, but in every place is a fascinat
 
 3. Run ```python scripts/download.py``` to download files to ```input``` dir
 
+4. Carry on with [England](England.md) (other nations in progress)
+
 ## Boundaries 
 
 Reference boundaries, full resolution. Converted to geojson in QGIS.
