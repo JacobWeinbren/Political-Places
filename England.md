@@ -2,26 +2,26 @@
 
 Guides for all other nations coming, when we do articles on them.
 
-1. cd into the dir
+1. cd into the dir root ```Political-Places```
 
-2. Run ```python eng.py``` to add data to geojson maps
+2. Run ```python eng.py``` to add data to geojson maps and collect csv files to output in ```/eng```
 
-3. Run ```python eng_wide.py``` to get England wide data, then add this data to ArcGIS
+3. 
+    a. This bit is more tricky - open ArcGIS, then run ```JSON to Features``` for Mobility and Deprivation ```.geojson``` files.
+    
+    b. Add in buildings onto the map from ```uk_vec geodatabase```. 
 
-4. 
-    a. This bit is more tricky - open ArcGIS, then run JSON to Features for Mob and Dep geojson files.
+    c. Select your constituencies and then export their features through ```Data -> Export Features```
 
-    b. Select your constituencies and then export the features through data -> export features.
+    d. Give old constituencies the ```old_con``` attribute, and do the same with new constituencies, ```new_con```
 
-    c. Give old constituencies the 'old_con' attribute, and do the same with new constituencies
+    e. ```Overlay (Union)``` the constituencies (this makes smaller features that represent where they overlap)
+    
+    f. Intersect with combined constituencies, keeping ```new_con``` and ```old_con```
 
-    d. Overlay (union) the constituencies (this makes smaller features that represent where they overlap)
+    g. Intersect combined constituencies with ```deprivation``` and ```mobility``` features. keep old_con, new_con + dep/mob attrs and remove the remainder. This works because they are both LSOA data.
 
-    e. Add in buildings onto the map from uk_vec geodatabase. Intersect with combined cons, keeping new_con and old_con
-
-    f. Intersected combined constituencies with dep and mobility. keep old_con, new_con + dep/mob attrs. This works because they are both LSOA data.
-
-    h. Preview layer blend in appearence - then upload by right clicking layers and selecting sharing web layer (vector tile)
+    h. Preview layer blend ```colour burn``` in appearence - then upload by right clicking layers and selecting sharing web layer (vector tile)
 
     i. The resulting map should look similar to the following.
 
