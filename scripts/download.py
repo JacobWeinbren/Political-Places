@@ -98,13 +98,13 @@ download(
 	"https://api.os.uk/downloads/v1/products/BoundaryLine/downloads?area=GB&format=ESRI%C2%AE+Shapefile&redirect", 
 	"GB Constituencies 2019"
 )
-if os.path.exists(inputdir + 'con_old/Data'):
-	copyfile(inputdir + "con_old/Data/GB/westminster_const_region.dbf", inputdir + "con_old/westminster_const_region.dbf")
-	copyfile(inputdir + "con_old/Data/GB/westminster_const_region.prj", inputdir + "con_old/westminster_const_region.prj")
-	copyfile(inputdir + "con_old/Data/GB/westminster_const_region.shp", inputdir + "con_old/westminster_const_region.shp")
-	copyfile(inputdir + "con_old/Data/GB/westminster_const_region.shx", inputdir + "con_old/westminster_const_region.shx")
-	shutil.rmtree(inputdir + "con_old/Data")
-	shutil.rmtree(inputdir + "con_old/Doc")
+if os.path.exists(inputdir + 'con_gb/Data'):
+	copyfile(inputdir + "con_gb/Data/GB/westminster_const_region.dbf", inputdir + "con_gb/westminster_const_region.dbf")
+	copyfile(inputdir + "con_gb/Data/GB/westminster_const_region.prj", inputdir + "con_gb/westminster_const_region.prj")
+	copyfile(inputdir + "con_gb/Data/GB/westminster_const_region.shp", inputdir + "con_gb/westminster_const_region.shp")
+	copyfile(inputdir + "con_gb/Data/GB/westminster_const_region.shx", inputdir + "con_gb/westminster_const_region.shx")
+	shutil.rmtree(inputdir + "con_gb/Data")
+	shutil.rmtree(inputdir + "con_gb/Doc")
 
 #England Constituencies New
 download(
