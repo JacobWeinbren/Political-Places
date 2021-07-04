@@ -3,4 +3,5 @@ input/**/**
 output/**/**
 __pycache__
 node_modules
-dist
+dist/main.css
+dist/main.js
