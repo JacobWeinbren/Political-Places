@@ -13,7 +13,7 @@ Guides for all other nations coming, when we do articles on them.
 
     c. Select your constituencies and then export their features through ```Data -> Export Features```.
 
-    d. Give old constituencies the ```old_con``` attribute, and do the same with new constituencies, ```new_con```. You can do this in ```Data -> Attribue Table```, setting the value type to ```text```.
+    d. Give old constituencies the ```old_con``` attribute, and do the same with new constituencies, ```new_con```. You can do this in ```Data -> Attribute Table```, setting the value type to ```text```.
 
     e. ```Overlay (Union)``` the constituencies (this makes smaller features that represent where they overlap).
     
