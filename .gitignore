@@ -6,4 +6,3 @@ node_modules
 dist/main.css
 dist/main.js
 .env
-package-lock.json
