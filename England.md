@@ -17,9 +17,9 @@ Guides for all other nations coming, when we do articles on them.
 
     e. ```Overlay (Union)``` the constituencies (this makes smaller features that represent where they overlap).
     
-    f. Intersect with combined constituencies, keeping ```new_con``` and ```old_con```.
+    f. Intersect buildings with combined constituencies, keeping ```new_con``` and ```old_con```.
 
-    g. Intersect combined constituencies with ```deprivation``` and ```mobility``` features. keep old_con, new_con + dep/mob attrs and remove the remainder. This works because they are both LSOA data.
+    g. Intersect ```deprivation``` and ```mobility``` with combined constituencies. keep ```old_con```, ```new_con``` + ```dep```/```mob``` attrs and remove the remainder. This works because they are both LSOA data.
 
     h. Preview layer blend ```colour burn``` in appearence - then upload by right clicking layers and selecting sharing web layer (vector tile).
 
