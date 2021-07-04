@@ -19,6 +19,7 @@
     "sass": "^1.35.1"
   },
   "dependencies": {
-    "dotenv": "^10.0.0"
+    "dotenv": "^10.0.0",
+    "rollup-plugin-dotenv": "^0.3.0"
   }
 }
