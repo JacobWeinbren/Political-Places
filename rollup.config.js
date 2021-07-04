@@ -1,9 +1,22 @@
-const path = require('path');
+import { nodeResolve } from '@rollup/plugin-node-resolve';
+import { terser } from "rollup-plugin-terser";
+import scss from 'rollup-plugin-scss'
+import { babel } from '@rollup/plugin-babel';
 
-module.exports = {
-    entry: './src/index.js',
+export default {
+    input: 'src/js/main.js',
     output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: 'bundle.js',
+        file: 'dist/main.js',
+        format: 'esm'
     },
+    plugins: [
+        scss({
+            outputStyle: "compressed"
+        }),
+        nodeResolve(),
+        terser(),
+        babel({
+            exclude: 'node_modules/**'
+        }),
+    ],
 };

@@ -1,0 +1,23 @@
+{
+  "name": "Political-Places",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "rollup -c",
+    "dev": "rollup -c --watch",
+    "reload": "livereload 'build/'",
+    "watch": "npm-run-all --parallel reload dev",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "rollup": "latest",
+    "rollup-plugin-scss": "latest",
+    "rollup-plugin-terser": "latest",
+    "sass": "latest"
+  },
+  "dependencies": {
+    "@babel/core": "latest",
+    "@rollup/plugin-babel": "latest",
+    "@rollup/plugin-node-resolve": "latest"
+  }
+}
