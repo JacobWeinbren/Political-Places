@@ -23,6 +23,8 @@ Guides for all other nations coming, when we do articles on them.
 
     h. Preview layer blend ```colour burn``` in appearence - then upload by right clicking layers and selecting sharing web layer (vector tile).
 
+    i. Run ```Project``` to ```3857 (1984 Web Mercator)``` under Geoprocessing
+
     i. The resulting map should look similar to the following.
 
     ![Map of MK Constituencies on ArcGIS](result.png?raw=true "Map of MK Constituencies on ArcGIS")

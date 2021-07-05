@@ -3,6 +3,7 @@ input/**/**
 output/**/**
 __pycache__
 node_modules
-dist/main.css
-dist/main.js
+dist/**/**.css
+dist/**/**.js
+dist/chunks
 .env
