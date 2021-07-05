@@ -21,10 +21,8 @@ Guides for all other nations coming, when we do articles on them.
 
     g. Intersect ```deprivation``` and ```mobility``` with combined constituencies. keep ```old_con```, ```new_con``` + ```dep```/```mob``` attrs and remove the remainder. This works because they are both LSOA data.
 
-    h. Preview layer blend ```colour burn``` in appearence - then upload by right clicking layers and selecting sharing web layer (vector tile).
+    h. Preview layer blend ```colour burn``` in appearence - then upload by right clicking layers and selecting sharing web layer (vector tile). Remember to select WSG84 Projection
 
-    i. Run ```Project``` to ```3857 (1984 Web Mercator)``` under Geoprocessing
-
-    i. The resulting map should look similar to the following.
+    j. The resulting map should look similar to the following.
 
     ![Map of MK Constituencies on ArcGIS](result.png?raw=true "Map of MK Constituencies on ArcGIS")
