@@ -98,7 +98,6 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
         colorRendererCreator
             .createContinuousRenderer(colorParams)
             .then((response) => {
-                console.log(response);
                 rendererResult = response;
                 rendererResult.visualVariable.stops = [
                     { "color": [202, 0, 32, 255], "value": 8211 },
