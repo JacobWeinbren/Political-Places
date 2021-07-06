@@ -21,6 +21,7 @@ body,
 }
 
 #dephisto {
+    display: none;
     text-align: center;
     padding-top: 9px;
 }
