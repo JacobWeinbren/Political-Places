@@ -114,6 +114,8 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
                     valueExpression: expression,
                     view: view,
                     numBins: 20,
+                    minValue: 0,
+                    maxValue: 32844
                 });
             })
             .then((histogramResult) => {
