@@ -113,7 +113,7 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
                     layer: data_map,
                     valueExpression: expression,
                     view: view,
-                    numBins: 15,
+                    numBins: 20,
                 });
             })
             .then((histogramResult) => {
