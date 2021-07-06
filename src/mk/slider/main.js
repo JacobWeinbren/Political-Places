@@ -1,57 +1,33 @@
-import './style.scss'
+import '@esri/calcite-components/dist/calcite/calcite.css';
+import { defineCustomElements, setAssetPath } from '@esri/calcite-components/dist/custom-elements';
 
-import $ from "jquery";
+setAssetPath('dist/mk/slider/assets');
+defineCustomElements();
 
-console.log('test');
+import './style.css';
+import $ from 'jquery';
+
+import esriConfig from "@arcgis/core/config";
+import Map from "@arcgis/core/Map";
+import MapView from "@arcgis/core/views/MapView";
 
 $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data) {
 
-    require([
-        "esri/config",
-        "esri/Map",
-        "esri/views/MapView",
-        "esri/Basemap",
-        "esri/layers/VectorTileLayer",
-        "esri/geometry/SpatialReference",
-    ], function(
-        esriConfig,
-        Map,
-        MapView,
-        Basemap,
-        VectorTileLayer,
-        SpatialReference
-    ) {
-        esriConfig.apiKey = data['access_token'];
+    esriConfig.apiKey = data['access_token'];
 
-        let basemap = new Basemap({
-            portalItem: {
-                id: "a118075240bc4e4f8062265ecdad0e7e"
-            }
-        });
+    const map = new Map({
+        basemap: 'arcgis-dark-gray'
+    });
 
-        /*const b = new VectorTileLayer({
-            url: "https://vectortileservices5.arcgis.com/N6Nhpnxaedla81he/arcgis/rest/services/MK_Data/VectorTileServer"
-        });*/
+    const view = new MapView({
+        map: map,
+        zoom: 11,
+        center: [-0.75, 52.04],
+        container: "map",
+    });
 
-        var map = new Map({
-            basemap: basemap,
-            layers: [b]
-        });
-
-        const view = new MapView({
-            map: map,
-            zoom: 11,
-            container: "map",
-            constraints: {
-                minZoom: 10,
-                maxZoom: 20,
-            }
-            spatialReference: {
-                wkid: 3857
-            }
-            center: [50, -0.3]
-        });
-
-        console.log(view)
+    view.when(function() {
+        view.ui.add("dropdown", "bottom-right");
+        $("#dropdown").show();
     });
 });

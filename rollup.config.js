@@ -1,33 +1,34 @@
-import { nodeResolve } from '@rollup/plugin-node-resolve';
-import { terser } from "rollup-plugin-terser";
-import scss from 'rollup-plugin-scss'
-import { babel } from '@rollup/plugin-babel';
+import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
+import { terser } from 'rollup-plugin-terser';
+import copy from 'rollup-plugin-copy';
+import postcss from 'rollup-plugin-postcss';
+import path from 'path';
+
+const production = !process.env.ROLLUP_WATCH;
 
 export default {
     input: 'src/mk/slider/main.js',
-    output: {
-        dir: 'dist/mk/slider',
+    output: [{
+        dir: path.resolve('dist/mk/slider'),
         format: 'es',
-        sourcemap: false,
-    },
-    treeshake: false,
+        chunkFileNames: 'chunks/[name]-[hash].js'
+    }],
+    treeshake: production,
     preserveEntrySignatures: false,
     plugins: [
-        terser(),
-        babel({
-            exclude: 'node_modules/**',
-            babelHelpers: 'bundled'
+        commonjs(),
+        resolve(),
+        postcss({
+            extensions: ['.css'],
+            extract: true
         }),
-        nodeResolve({
-            preferBuiltins: false
+        copy({
+            targets: [{
+                src: path.resolve(__dirname, 'node_modules/@esri/calcite-components/dist/calcite/assets'),
+                dest: path.resolve(__dirname, 'dist/mk/slider')
+            }, ]
         }),
-        commonjs({
-            sourceMap: false
-        }),
-        scss({
-            outputStyle: "compressed",
-            output: 'dist/mk/slider/bundle.css',
-        })
-    ],
+        production && terser()
+    ]
 };

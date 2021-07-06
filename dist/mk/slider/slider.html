@@ -1,19 +1,34 @@
 <!doctype html>
-<html lang="en">
 <html>
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
-    <link rel="stylesheet" href="https://js.arcgis.com/4.20/esri/themes/light/main.css">
-    <script src="https://js.arcgis.com/4.20/"></script>
-    <link rel="stylesheet" href="bundle.css">
-    <title>Slider</title>
+<head lang='en'>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width'>
+    <link rel="stylesheet" href="https://js.arcgis.com/4.20/esri/themes/light/main.css" />
+    <link rel="stylesheet" href="main.css" />
+    <title>rollup-starter-app</title>
 </head>
 
 <body>
-    <div id="map"></div>
-    <script type="module" src="main.js"></script>
+    <main>
+        <div class="shell-container">
+            <calcite-shell>
+                <div id="map"></div>
+                <calcite-dropdown id="dropdown" label="Select Data Focus">
+                    <calcite-button slot="dropdown-trigger">Select Data Focus</calcite-button>
+                    <calcite-dropdown-group selection-mode="single" group-title="Data Focus">
+                        <calcite-dropdown-item active>Buckingham and Bletchley</calcite-dropdown-item>
+                        <calcite-dropdown-item>Milton Keynes</calcite-dropdown-item>
+                        <calcite-dropdown-item>Newport Pagnell</calcite-dropdown-item>
+                        <calcite-dropdown-item>Milton Keynes South</calcite-dropdown-item>
+                        <calcite-dropdown-item>Milton Keynes North</calcite-dropdown-item>
+                        <calcite-dropdown-item>England</calcite-dropdown-item>
+                    </calcite-dropdown-group>
+                </calcite-dropdown>
+            </calcite-shell>
+        </div>
+    </main>
+    <script type="module" src='main.js'></script>
 </body>
 
 </html>

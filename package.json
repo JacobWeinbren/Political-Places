@@ -1,23 +1,27 @@
 {
   "name": "Political-Places",
-  "version": "1.0.0",
-  "private": true,
-  "scripts": {
-    "build": "rollup -c rollup.config.js",
-    "watch": "rollup -w -c rollup.config.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "latest",
+    "@rollup/plugin-node-resolve": "latest",
+    "@stencil/core": "latest",
+    "jquery": "^3.6.0",
+    "npm-run-all": "latest",
+    "rollup": "latest",
+    "rollup-plugin-copy": "^3.4.0",
+    "rollup-plugin-postcss": "latest",
+    "rollup-plugin-terser": "latest",
+    "serve": "latest"
   },
-  "devDependencies": {},
   "dependencies": {
     "@arcgis/core": "^4.20.1",
-    "@babel/core": "^7.14.6",
-    "@rollup/plugin-babel": "^5.3.0",
-    "@rollup/plugin-commonjs": "^19.0.0",
-    "@rollup/plugin-node-resolve": "^13.0.0",
-    "jquery": "^3.6.0",
-    "node-sass": "^6.0.1",
-    "rollup": "^2.52.7",
-    "rollup-plugin-scss": "^3.0.0",
-    "rollup-plugin-terser": "^7.0.2"
+    "@esri/calcite-components": "latest",
+    "postcss": "^8.3.5",
+    "simple-get-json": "^8.1.1"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "watch": "rollup -c -w",
+    "dev": "npm-run-all --parallel start watch",
+    "start": "serve public"
   }
 }

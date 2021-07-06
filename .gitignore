@@ -5,5 +5,6 @@ __pycache__
 node_modules
 dist/**/**.css
 dist/**/**.js
-dist/chunks
+dist/**/**/assets
+dist/**/**/chunks
 .env
