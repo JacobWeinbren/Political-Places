@@ -58,6 +58,7 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
 
     //Filters
     view.whenLayerView(data_map).then((layerView) => {
+        generateRenderer();
         layerView.filter = {
             where: "new_con = '" + current_focus + "'"
         };
@@ -67,28 +68,29 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
 
         $('#dropdown').on('calciteDropdownSelect', function() {
             current_focus = $('#dropdown').prop('selectedItems')[0].textContent;
+            $('#slider').html('');
+
+            generateRenderer();
             layerView.filter = {
                 where: "new_con = '" + current_focus + "' OR old_con = '" + current_focus + "'"
             };
-            $('#slider').html('');
-            generateRenderer();
         });
     });
 
     //Histogram (deprivation)
 
-    watchUtils.whenFalseOnce(view, "updating", generateRenderer);
-
     function generateRenderer() {
-        var expression = "if ($feature.new_con =='" + current_focus + "' || $feature.old_con == '" + current_focus + "') {return $feature.dep;} else {return 50000;}";
+        $('#dephisto').hide();
+        var expression = "if ($feature.new_con =='" + current_focus + "' || $feature.old_con == '" + current_focus + "') {return $feature.dep;} else {return 'test';}";
 
         const colorParams = {
             layer: data_map,
-            valueExpression: expression,
+            valueExpression: '$feature.dep',
             view: view,
             theme: "above-and-below",
             outlineOptimizationEnabled: true,
-            maxValue: 32844
+            maxValue: 32844,
+            minValue: 0
         };
 
         let rendererResult;
@@ -96,13 +98,22 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
         colorRendererCreator
             .createContinuousRenderer(colorParams)
             .then((response) => {
+                console.log(response);
                 rendererResult = response;
+                rendererResult.visualVariable.stops = [
+                    { "color": [202, 0, 32, 255], "value": 8211 },
+                    { "color": [244, 165, 130, 255], "value": 12316.5 },
+                    { "color": [247, 247, 247, 255], "value": 16422 },
+                    { "color": [146, 197, 222, 255], "value": 20527.5 },
+                    { "color": [5, 113, 176, 255], "value": 24633 }
+                ];
+
                 data_map.renderer = rendererResult.renderer;
                 return histogram({
                     layer: data_map,
-                    valueExpression: colorParams.valueExpression,
+                    valueExpression: expression,
                     view: view,
-                    numBins: 10
+                    numBins: 15,
                 });
             })
             .then((histogramResult) => {
@@ -110,6 +121,9 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
                     rendererResult,
                     histogramResult
                 );
+
+                colorSlider.container = "slider";
+                colorSlider.primaryHandleEnabled = true;
 
                 colorSlider.labelFormatFunction = (value, type) => {
                     return Math.round(value);
@@ -137,16 +151,6 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
                 }
 
                 colorSlider.viewModel.precision = 1;
-
-                colorSlider.min = 0;
-                colorSlider.max = 32844;
-                colorSlider.container = "slider";
-                colorSlider.primaryHandleEnabled = true;
-
-                colorSlider.viewModel.setValue(1, 16422);
-                colorSlider.viewModel.setValue(2, 24633);
-                colorSlider.viewModel.setValue(0, 8211);
-                changeEventHandler();
 
                 view.ui.add("dephisto", "bottom-left");
                 $('#dephisto').show();
