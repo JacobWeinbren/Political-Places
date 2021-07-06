@@ -20,3 +20,17 @@ body,
 #dropdown {
     display: none;
 }
+
+#dephisto {
+    text-align: center;
+    padding-top: 9px;
+}
+
+#dephisto #title {
+    margin: 0 auto;
+    font-weight: bold;
+}
+
+.esri-color-slider .esri-slider .esri-slider__content {
+    margin: 0 auto 0 44%;
+}
