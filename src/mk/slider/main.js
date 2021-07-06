@@ -32,7 +32,11 @@ const dep_stops = [
 ];
 
 const defaultSym = {
-    type: "simple-fill"
+    type: "simple-fill",
+    outline: {
+        color: [128, 128, 128, 0.2],
+        width: "0.5px"
+    }
 };
 
 $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data) {
@@ -94,9 +98,15 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
             $('#slider').html('');
 
             generateRenderer();
-            layerView.filter = {
-                where: "new_con = '" + current_focus + "' OR old_con = '" + current_focus + "'"
-            };
+            if (current_focus == "All Combined") {
+                layerView.filter = {
+                    where: ""
+                };
+            } else {
+                layerView.filter = {
+                    where: "new_con = '" + current_focus + "' OR old_con = '" + current_focus + "'"
+                };
+            }
         });
     });
 
@@ -104,7 +114,13 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
 
     function generateRenderer() {
         $('#dephisto').hide();
-        var expression = "if ($feature.new_con =='" + current_focus + "' || $feature.old_con == '" + current_focus + "') {return $feature.dep;} else {return 'test';}";
+
+        var expression;
+        if (current_focus == "All Combined") {
+            expression = '$feature.new_con';
+        } else {
+            expression = "if ($feature.new_con =='" + current_focus + "' || $feature.old_con == '" + current_focus + "') {return $feature.dep;} else {return 'test';}";
+        }
 
         const colorParams = {
             layer: data_map,
@@ -122,7 +138,6 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
             .createContinuousRenderer(colorParams)
             .then((response) => {
                 rendererResult = response;
-                console.log(rendererResult.renderer);
                 rendererResult.renderer.visualVariables[0].stops = rendererResult.visualVariable.stops = dep_stops;
 
                 data_map.renderer = rendererResult.renderer;
