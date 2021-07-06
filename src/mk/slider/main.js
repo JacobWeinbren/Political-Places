@@ -23,6 +23,17 @@ import * as watchUtils from "@arcgis/core/core/watchUtils";
 import FeatureFilter from "@arcgis/core/views/layers/support/FeatureFilter";
 
 var current_focus = 'Milton Keynes'
+const dep_stops = [
+    { "color": [202, 0, 32, 255], "value": 8211 },
+    { "color": [244, 165, 130, 255], "value": 12316.5 },
+    { "color": [247, 247, 247, 255], "value": 16422 },
+    { "color": [146, 197, 222, 255], "value": 20527.5 },
+    { "color": [5, 113, 176, 255], "value": 24633 }
+];
+
+const defaultSym = {
+    type: "simple-fill"
+};
 
 $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data) {
 
@@ -33,7 +44,19 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
         url: "https://services5.arcgis.com/N6Nhpnxaedla81he/arcgis/rest/services/MK_Buildings/FeatureServer/"
     });
 
+    const dep_renderer = {
+        type: "simple",
+        symbol: defaultSym,
+        visualVariables: [{
+            type: "color",
+            valueExpression: "$feature.dep",
+            valueExpressionTitle: "Deprivation",
+            stops: dep_stops
+        }]
+    };
+
     const data_map = new FeatureLayer({
+        renderer: dep_renderer,
         url: 'https://services5.arcgis.com/N6Nhpnxaedla81he/arcgis/rest/services/MK_Data/FeatureServer/'
     });
 
@@ -100,13 +123,7 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
             .then((response) => {
                 rendererResult = response;
                 console.log(rendererResult.renderer);
-                rendererResult.renderer.visualVariables[0].stops = rendererResult.visualVariable.stops = [
-                    { "color": [202, 0, 32, 255], "value": 8211 },
-                    { "color": [244, 165, 130, 255], "value": 12316.5 },
-                    { "color": [247, 247, 247, 255], "value": 16422 },
-                    { "color": [146, 197, 222, 255], "value": 20527.5 },
-                    { "color": [5, 113, 176, 255], "value": 24633 }
-                ];
+                rendererResult.renderer.visualVariables[0].stops = rendererResult.visualVariable.stops = dep_stops;
 
                 data_map.renderer = rendererResult.renderer;
                 return histogram({
