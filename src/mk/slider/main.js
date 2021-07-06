@@ -95,7 +95,6 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
 
         $('#dropdown').on('calciteDropdownSelect', function() {
             current_focus = $('#dropdown').prop('selectedItems')[0].textContent;
-            $('#slider').html('');
 
             generateRenderer();
             if (current_focus == "All Combined") {
@@ -113,11 +112,12 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
     //Histogram (deprivation)
 
     function generateRenderer() {
+        $('#slider').html('');
         $('#dephisto').hide();
 
         var expression;
         if (current_focus == "All Combined") {
-            expression = '$feature.new_con';
+            expression = '$feature.dep';
         } else {
             expression = "if ($feature.new_con =='" + current_focus + "' || $feature.old_con == '" + current_focus + "') {return $feature.dep;} else {return 'test';}";
         }
