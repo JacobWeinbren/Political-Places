@@ -105,21 +105,11 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
                 colorSlider.labelFormatFunction = (value, type) => {
                     return Math.round(value);
                 };
-                colorSlider.histogramConfig.dataLineCreatedFunction = (
-                    lineElement,
-                    labelElement,
-                    index
-                ) => {
-                    if (index != null) {
-                        lineElement.setAttribute("x2", "66%");
-                        const sign = index === 0 ? "-" : "+";
-                        labelElement.innerHTML = sign + "σ";
-                    }
-                };
                 colorSlider.viewModel.precision = 1;
-                colorSlider.viewModel.setValue(0, 8211)
-                colorSlider.viewModel.setValue(1, 16422)
-                colorSlider.viewModel.setValue(2, 24633)
+
+                colorSlider.viewModel.setValue(1, 16422);
+                colorSlider.viewModel.setValue(2, 24633);
+                colorSlider.viewModel.setValue(0, 8211);
 
                 view.ui.add("dephisto", "bottom-left");
 
