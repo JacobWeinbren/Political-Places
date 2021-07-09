@@ -165,7 +165,7 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
                     slider.set({
                         container: "slider",
                         primaryHandleEnabled: true,
-                        handlesSyncedToPrimary: false,
+                        handlesSyncedToPrimary: true,
                     });
 
                     //Sets labels
