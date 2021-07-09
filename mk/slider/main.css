@@ -35,3 +35,7 @@ body,
 .esri-color-slider .esri-slider .esri-slider__content {
     margin: 0 auto 0 44%;
 }
+
+.esri-slider__label esri-slider__label--interactive {
+    display: none;
+}
