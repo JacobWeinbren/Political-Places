@@ -5,8 +5,8 @@ import statistics, numpy
 
 content = range(0,32844)
 mean = statistics.mean(content)
-std = numpy.std(content)
-print(mean, std)
+quartile = numpy.quantile(content, .25)
+print(mean, quartile)
 
 def readFile(filename):
     #Reads files

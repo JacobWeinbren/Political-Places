@@ -89,6 +89,8 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
         var vv;
         var where;
 
+        var titles = ["25% Quartile", "Local Average", "Eng. Average", "75% Quartile"];
+
         //Filters map
         if (current_constituency == "All Combined") {
             where = "";
@@ -174,16 +176,16 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
 
                     slider.histogramConfig.dataLines = [{
                         value: temp_array.quartile(0.25),
-                        label: "25% Quartile"
+                        label: titles[0]
                     }, {
                         value: temp_array.median(),
-                        label: "Local Average"
+                        label: titles[1]
                     }, {
                         value: 16422,
-                        label: "Eng. Average"
+                        label: titles[2]
                     }, {
                         value: temp_array.quartile(0.75),
-                        label: "75% Quartile"
+                        label: titles[3]
                     }];
 
                     //Smaller lines for quartiles
@@ -192,7 +194,8 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
                         labelElement,
                         index
                     ) => {
-                        labelElement.setAttribute("x2", "66%");
+                        $(lineElement).text(titles[index]);
+                        $(labelElement).attr("x2", "66%");
                     };
 
                     //Sets colour stops
