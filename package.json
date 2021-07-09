@@ -6,17 +6,18 @@
     "@stencil/core": "latest",
     "jquery": "^3.6.0",
     "npm-run-all": "latest",
-    "rollup": "latest",
+    "rollup": "^2.52.8",
     "rollup-plugin-copy": "^3.4.0",
     "rollup-plugin-postcss": "latest",
     "rollup-plugin-terser": "latest",
     "serve": "latest"
   },
   "dependencies": {
-    "@arcgis/core": "^4.20.1",
-    "@esri/calcite-components": "latest",
+    "@arcgis/core": "^4.20.2",
+    "@esri/calcite-components": "^1.0.0-beta.59",
     "postcss": "^8.3.5",
-    "simple-get-json": "^8.1.1"
+    "simple-get-json": "^8.1.1",
+    "summary": "^2.1.0"
   },
   "scripts": {
     "build": "rollup -c",

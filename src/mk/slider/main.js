@@ -10,6 +10,9 @@ import './style.css';
 import jQuery from "jquery";
 window.$ = window.jQuery = jQuery;
 
+//Loads in statistics
+import summary from 'summary'
+
 //Loads in arcgis
 import esriConfig from '@arcgis/core/config';
 import Map from '@arcgis/core/Map';
@@ -19,25 +22,11 @@ import GroupLayer from '@arcgis/core/layers/GroupLayer'
 import ColorSlider from "@arcgis/core/widgets/smartMapping/ColorSlider";
 import * as colorRendererCreator from "@arcgis/core/smartMapping/renderers/color";
 import histogram from "@arcgis/core/smartMapping/statistics/histogram";
-import * as watchUtils from "@arcgis/core/core/watchUtils";
-import FeatureFilter from "@arcgis/core/views/layers/support/FeatureFilter";
+import Query from "@arcgis/core/rest/support/Query";
 
-var current_focus = 'Milton Keynes'
-const dep_stops = [
-    { "color": [202, 0, 32, 255], "value": 8211 },
-    { "color": [244, 165, 130, 255], "value": 12316.5 },
-    { "color": [247, 247, 247, 255], "value": 16422 },
-    { "color": [146, 197, 222, 255], "value": 20527.5 },
-    { "color": [5, 113, 176, 255], "value": 24633 }
-];
-
-const defaultSym = {
-    type: "simple-fill",
-    outline: {
-        color: [128, 128, 128, 0.2],
-        width: "0.5px"
-    }
-};
+var current_constituency = 'Milton Keynes'
+var current_focus = 'dep'
+var range = [0, 32844];
 
 $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data) {
 
@@ -45,22 +34,12 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
 
     //Loads in layers
     const buildings = new FeatureLayer({
+        visible: false,
         url: "https://services5.arcgis.com/N6Nhpnxaedla81he/arcgis/rest/services/MK_Buildings/FeatureServer/"
     });
 
-    const dep_renderer = {
-        type: "simple",
-        symbol: defaultSym,
-        visualVariables: [{
-            type: "color",
-            valueExpression: "$feature.dep",
-            valueExpressionTitle: "Deprivation",
-            stops: dep_stops
-        }]
-    };
-
     const data_map = new FeatureLayer({
-        renderer: dep_renderer,
+        visible: false,
         url: 'https://services5.arcgis.com/N6Nhpnxaedla81he/arcgis/rest/services/MK_Data/FeatureServer/'
     });
 
@@ -85,117 +64,186 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
 
     //Filters
     view.whenLayerView(data_map).then((layerView) => {
-        generateRenderer();
-        layerView.filter = {
-            where: "new_con = '" + current_focus + "'"
-        };
+        generateRenderer(layerView);
 
+        //Add dropdown
         view.ui.add('dropdown', 'top-right');
         $('#dropdown').show();
 
+        //Dropdown fcontrol
         $('#dropdown').on('calciteDropdownSelect', function() {
-            current_focus = $('#dropdown').prop('selectedItems')[0].textContent;
-
-            generateRenderer();
-            if (current_focus == "All Combined") {
-                layerView.filter = {
-                    where: ""
-                };
-            } else {
-                layerView.filter = {
-                    where: "new_con = '" + current_focus + "' OR old_con = '" + current_focus + "'"
-                };
-            }
+            current_constituency = $('#dropdown').prop('selectedItems')[0].textContent;
+            generateRenderer(layerView);
         });
     });
 
-    //Histogram (deprivation)
-
-    function generateRenderer() {
+    //Creates continuous renderer
+    function generateRenderer(layerView) {
+        //Resets the slider and histogram
         $('#slider').html('');
         $('#dephisto').hide();
 
+        //Establishes variables
         var expression;
-        if (current_focus == "All Combined") {
-            expression = '$feature.dep';
+        var rendererResult;
+        var vv;
+        var where;
+
+        //Filters map
+        if (current_constituency == "All Combined") {
+            where = "";
         } else {
-            expression = "if ($feature.new_con =='" + current_focus + "' || $feature.old_con == '" + current_focus + "') {return $feature.dep;} else {return 'test';}";
+            where = "new_con = '" + current_constituency + "' OR old_con = '" + current_constituency + "'";
         }
 
+        layerView.filter = {
+            where: where
+        };
+
+        //Sets histogram params
         const colorParams = {
             layer: data_map,
-            valueExpression: '$feature.dep',
+            valueExpression: "$feature." + current_focus,
             view: view,
             theme: "above-and-below",
             outlineOptimizationEnabled: true,
-            maxValue: 32844,
-            minValue: 0
+            maxValue: range[1],
+            minValue: range[0],
         };
 
-        let rendererResult;
+        var query = new Query();
+        query.where = where;
+        query.outFields = ['dep'];
 
-        colorRendererCreator
-            .createContinuousRenderer(colorParams)
-            .then((response) => {
-                rendererResult = response;
-                rendererResult.renderer.visualVariables[0].stops = rendererResult.visualVariable.stops = dep_stops;
+        data_map.queryFeatures(query).then(function(results) {
 
-                data_map.renderer = rendererResult.renderer;
-                return histogram({
-                    layer: data_map,
-                    valueExpression: expression,
-                    view: view,
-                    numBins: 20,
-                    minValue: 0,
-                    maxValue: 32844
-                });
-            })
-            .then((histogramResult) => {
-                const colorSlider = ColorSlider.fromRendererResult(
-                    rendererResult,
-                    histogramResult
-                );
+            //Gets the statistics for the data
+            var features = results.features;
+            var temp_array = [];
+            for (var i = 0; i < features.length; i++) {
+                temp_array.push(features[i]['attributes'][current_focus]);
+            }
+            temp_array = summary(temp_array, false);
 
-                colorSlider.container = "slider";
-                colorSlider.primaryHandleEnabled = true;
+            //Builds the colour slider
+            colorRendererCreator
+                .createContinuousRenderer(colorParams)
+                .then((response) => {
+                    //Establishes renderer
+                    rendererResult = response;
+                    vv = rendererResult.visualVariable;
+                    data_map.renderer = response.renderer;
 
-                colorSlider.labelFormatFunction = (value, type) => {
-                    return Math.round(value);
-                };
+                    //Shows map
+                    data_map.visible = true;
+                    buildings.visible = true;
 
-                colorSlider.histogramConfig.dataLineCreatedFunction = (
-                    lineElement,
-                    labelElement,
-                    index
-                ) => {
-                    if (index != null) {
-                        lineElement.setAttribute("x2", "66%");
-                        const sign = index === 0 ? "-" : "+";
-                        labelElement.innerHTML = sign + "σ";
+                    //Gets histogram query
+                    if (current_constituency == "All Combined") {
+                        expression = "$feature." + current_focus;
+                    } else {
+                        expression = "if ($feature.new_con =='" + current_constituency + "' || $feature.old_con == '" + current_constituency + "') {return $feature." + current_focus + ";} else {return 'test';}";
                     }
-                };
 
-                function changeEventHandler() {
-                    const renderer = data_map.renderer.clone();
-                    const colorVariable = renderer.visualVariables[0].clone();
-                    const outlineVariable = renderer.visualVariables[1];
-                    colorVariable.stops = colorSlider.stops;
-                    renderer.visualVariables = [colorVariable, outlineVariable];
-                    data_map.renderer = renderer;
-                }
+                    return histogram({
+                        layer: data_map,
+                        valueExpression: expression,
+                        view: view,
+                        numBins: 20,
+                        minValue: range[0],
+                        maxValue: range[1],
+                    });
 
-                colorSlider.viewModel.precision = 1;
+                })
+                .then((histogramResult) => {
+                    //Establishes slider
+                    const slider = ColorSlider.fromRendererResult(
+                        rendererResult,
+                        histogramResult
+                    );
 
-                view.ui.add("dephisto", "bottom-left");
-                $('#dephisto').show();
+                    slider.set({
+                        container: "slider",
+                        primaryHandleEnabled: true,
+                        handlesSyncedToPrimary: false,
+                    });
 
-                colorSlider.on(
-                    ["thumb-change", "thumb-drag", "min-change", "max-change"],
-                    changeEventHandler
-                );
-            })
-            .catch((error) => {
-                console.error("Error: ", error);
-            });
+                    //Sets labels
+                    slider.histogramConfig.average = null;
+                    slider.histogramConfig.standardDeviation = null;
+
+                    slider.histogramConfig.dataLines = [{
+                        value: temp_array.quartile(0.25),
+                        label: "25% Quartile"
+                    }, {
+                        value: temp_array.median(),
+                        label: "Local Average"
+                    }, {
+                        value: 16422,
+                        label: "Eng. Average"
+                    }, {
+                        value: temp_array.quartile(0.75),
+                        label: "75% Quartile"
+                    }];
+
+                    //Smaller lines for quartiles
+                    slider.histogramConfig.dataLineCreatedFunction = (
+                        lineElement,
+                        labelElement,
+                        index
+                    ) => {
+                        labelElement.setAttribute("x2", "66%");
+                    };
+
+                    //Sets colour stops
+                    slider.stops[0].value = temp_array.quartile(0.25);
+                    slider.stops[1].value = temp_array.quartile(0.375);
+                    slider.stops[2].value = temp_array.median();
+                    slider.stops[3].value = temp_array.quartile(0.625);
+                    slider.stops[4].value = temp_array.quartile(0.75);
+
+                    //Adds in context to slider
+                    var left_side = true;
+
+                    slider.labelFormatFunction = (value, type) => {
+                        if (left_side) {
+                            if (type == "max") {
+                                return "Least Deprived";
+                            }
+                            if (type == "value") {
+                                return ""
+                            }
+                            if (type == "min") {
+                                return "Most Deprived";
+                                left_slide = false;
+                            }
+                        } else {
+                            return Math.round(value);
+                        }
+                    }
+
+                    //Event handler for slider
+                    function changeEventHandler() {
+                        const renderer = data_map.renderer.clone();
+                        const colorVariable = renderer.visualVariables[0].clone();
+                        const outlineVariable = renderer.visualVariables[1];
+                        colorVariable.stops = slider.stops;
+                        renderer.visualVariables = [colorVariable, outlineVariable];
+                        data_map.renderer = renderer;
+                    }
+
+                    //Show histogram
+                    view.ui.add("dephisto", "bottom-left");
+                    $('#dephisto').show();
+
+                    slider.on(
+                        ["thumb-change", "thumb-drag", "min-change", "max-change"],
+                        changeEventHandler
+                    );
+                })
+                .catch((error) => {
+                    console.error("Error: ", error);
+                });
+        });
     }
 });
