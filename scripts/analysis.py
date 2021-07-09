@@ -4,22 +4,21 @@ Returns 5 values from a data list
 import statistics, numpy
 
 content = range(0,32844)
-mean = statistics.mean(content)
+median = statistics.median(content)
 quartile = numpy.quantile(content, .25)
-print(mean, quartile)
 
 def readFile(filename):
     #Reads files
     with open(filename) as f:
         content = f.readlines()
-    content = [x.strip() for x in content] 
 
-    #Removes strings
-    content = [x for x in content if not isinstance(x, str)]
+    parsed_content = []
+    for x in content:
+        try:
+            parsed_content.append(float(x))
+        except ValueError:
+            pass
+            
+    print(statistics.median(parsed_content))
 
-    mean = statistics.mean(content)
-    numpy.quantile(content, .25)
-    numpy.quantile(content, .375)
-    numpy.quantile(content, .5)
-    numpy.quantile(content, .625)
-    numpy.quantile(content, .5)
+readFile('../output/eng/eng_mob.csv')

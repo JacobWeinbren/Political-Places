@@ -23,10 +23,38 @@ import ColorSlider from "@arcgis/core/widgets/smartMapping/ColorSlider";
 import * as colorRendererCreator from "@arcgis/core/smartMapping/renderers/color";
 import histogram from "@arcgis/core/smartMapping/statistics/histogram";
 import Query from "@arcgis/core/rest/support/Query";
+import * as colorRamps from "@arcgis/core/smartMapping/symbology/support/colorRamps";
 
 var current_constituency = 'Milton Keynes'
-var current_focus = 'dep'
-var range = [0, 32844];
+var choice = 'Deprivation'
+var current_focus;
+var range;
+var median;
+var theme;
+var bins;
+var colors;
+
+function selectChoices() {
+    if (choice == "Deprivation") {
+        $('#title').text("Deprivation Ranking");
+        current_focus = 'dep';
+        range = [0, 32844];
+        median = 18422;
+        bins = 20;
+        theme = colorRamps.byName("Blue and Red 9");
+        colors = theme.colors;
+    }
+    if (choice == "Social Mobility") {
+        $('#title').text("Higher Education Participation (TUNDRA)");
+        current_focus = 'tundra';
+        range = [0.2, 0.65];
+        median = 0.421;
+        bins = 15;
+        theme = colorRamps.byName("Pink and Blue 1");
+        colors = theme.colors;
+        colors = colors.reverse();
+    }
+}
 
 $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data) {
 
@@ -72,7 +100,8 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
 
         //Dropdown fcontrol
         $('#dropdown').on('calciteDropdownSelect', function() {
-            current_constituency = $('#dropdown').prop('selectedItems')[0].textContent;
+            current_constituency = $($('#dropdown').prop('selectedItems')[0]).attr('choice')
+            choice = $($('#dropdown').prop('selectedItems')[1]).attr('choice');
             generateRenderer(layerView);
         });
     });
@@ -86,13 +115,14 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
         //Establishes variables
         var expression;
         var rendererResult;
-        var vv;
         var where;
+
+        selectChoices();
 
         var titles = ["25% Quartile", "Local Average", "Eng. Average", "75% Quartile"];
 
         //Filters map
-        if (current_constituency == "All Combined") {
+        if (current_constituency == "Combined") {
             where = "";
         } else {
             where = "new_con = '" + current_constituency + "' OR old_con = '" + current_constituency + "'";
@@ -109,13 +139,14 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
             view: view,
             theme: "above-and-below",
             outlineOptimizationEnabled: true,
-            maxValue: range[1],
             minValue: range[0],
+            maxValue: range[1]
         };
 
+        //Filter the map to the constituency
         var query = new Query();
         query.where = where;
-        query.outFields = ['dep'];
+        query.outFields = [current_focus];
 
         data_map.queryFeatures(query).then(function(results) {
 
@@ -127,21 +158,40 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
             }
             temp_array = summary(temp_array, false);
 
+            //Gets colours
+            var stops = [{
+                value: temp_array.quartile(0.25),
+                color: colors[0]
+            }, {
+                value: temp_array.quartile(0.375),
+                color: colors[1]
+            }, {
+                value: temp_array.median(),
+                color: colors[2]
+            }, {
+                value: temp_array.quartile(0.625),
+                color: colors[3]
+            }, {
+                value: temp_array.quartile(0.75),
+                color: colors[4]
+            }];
+
             //Builds the colour slider
             colorRendererCreator
                 .createContinuousRenderer(colorParams)
                 .then((response) => {
+
                     //Establishes renderer
                     rendererResult = response;
-                    vv = rendererResult.visualVariable;
-                    data_map.renderer = response.renderer;
+                    rendererResult.stops = rendererResult.renderer.visualVariables[0].stops = stops;
+                    data_map.renderer = rendererResult.renderer;
 
                     //Shows map
                     data_map.visible = true;
                     buildings.visible = true;
 
                     //Gets histogram query
-                    if (current_constituency == "All Combined") {
+                    if (current_constituency == "Combined") {
                         expression = "$feature." + current_focus;
                     } else {
                         expression = "if ($feature.new_con =='" + current_constituency + "' || $feature.old_con == '" + current_constituency + "') {return $feature." + current_focus + ";} else {return 'test';}";
@@ -151,13 +201,14 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
                         layer: data_map,
                         valueExpression: expression,
                         view: view,
-                        numBins: 20,
+                        numBins: bins,
                         minValue: range[0],
-                        maxValue: range[1],
+                        maxValue: range[1]
                     });
-
                 })
                 .then((histogramResult) => {
+                    console.log(rendererResult, histogramResult);
+
                     //Establishes slider
                     const slider = ColorSlider.fromRendererResult(
                         rendererResult,
@@ -181,7 +232,7 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
                         value: temp_array.median(),
                         label: titles[1]
                     }, {
-                        value: 16422,
+                        value: median,
                         label: titles[2]
                     }, {
                         value: temp_array.quartile(0.75),
@@ -199,11 +250,7 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
                     };
 
                     //Sets colour stops
-                    slider.stops[0].value = temp_array.quartile(0.25);
-                    slider.stops[1].value = temp_array.quartile(0.375);
-                    slider.stops[2].value = temp_array.median();
-                    slider.stops[3].value = temp_array.quartile(0.625);
-                    slider.stops[4].value = temp_array.quartile(0.75);
+                    slider.stops = stops;
 
                     //Adds in context to slider
                     var left_side = true;
@@ -211,17 +258,26 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
                     slider.labelFormatFunction = (value, type) => {
                         if (left_side) {
                             if (type == "max") {
-                                return "Least Deprived";
+                                if (current_focus == "dep") {
+                                    return "Least Deprived";
+                                }
+                                if (current_focus == "tundra") {
+                                    return "Most Socially Mobile";
+                                }
+
                             }
                             if (type == "value") {
                                 return ""
                             }
                             if (type == "min") {
-                                return "Most Deprived";
+                                if (current_focus == "dep") {
+                                    return "Most Deprived";
+                                }
+                                if (current_focus == "tundra") {
+                                    return "Least Socially Mobile";
+                                }
                                 left_slide = false;
                             }
-                        } else {
-                            return Math.round(value);
                         }
                     }
 
