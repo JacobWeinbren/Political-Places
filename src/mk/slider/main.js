@@ -92,6 +92,14 @@ const defaultRenderer = {
     }]
 };
 
+//Lines to be drawn
+var titles = [
+    "25% Quartile",
+    "Local Average",
+    "Eng. Average",
+    "75% Quartile"
+];
+
 $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data) {
 
     esriConfig.apiKey = data['access_token'];
@@ -143,6 +151,7 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
 
     //Creates continuous renderer
     function generateRenderer(layerView) {
+
         //Resets the slider and histogram
         $('#slider').html('');
         $('#dephisto').hide();
@@ -152,11 +161,10 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
         var rendererResult;
         var where;
 
+        //Establishes variables, based on focus
         selectChoices();
 
-        var titles = ["25% Quartile", "Local Average", "Eng. Average", "75% Quartile"];
-
-        //Filters map
+        //Filters map layer
         if (current_constituency == "Combined") {
             where = "";
         } else {
@@ -291,7 +299,7 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
                         label: titles[3]
                     }];
 
-                    //Smaller lines for quartiles
+                    //Smaller lines
                     slider.histogramConfig.dataLineCreatedFunction = (
                         lineElement,
                         labelElement,
@@ -303,9 +311,8 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
 
                     //Sets colour stops
                     slider.stops = stops;
-                    console.log(slider.stops);
 
-                    //Adds in context to slider
+                    //Adds in labels to the slider
                     var left_side = true;
 
                     slider.labelFormatFunction = (value, type) => {
@@ -334,7 +341,7 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
                         }
                     }
 
-                    //Event handler for slider
+                    //Event handler for slider on colour slider move
                     function changeEventHandler() {
                         const renderer = data_map.renderer.clone();
                         const colorVariable = renderer.visualVariables[0].clone();
