@@ -25,7 +25,7 @@ import histogram from "@arcgis/core/smartMapping/statistics/histogram";
 import Query from "@arcgis/core/rest/support/Query";
 import * as colorRamps from "@arcgis/core/smartMapping/symbology/support/colorRamps";
 
-var current_constituency = 'Milton Keynes'
+var current_constituency = 'Combined'
 var choice = 'Deprivation'
 var current_focus;
 var range;
@@ -56,18 +56,53 @@ function selectChoices() {
     }
 }
 
+//Sets default renderer
+var defaultStops = [{
+    "value": 14553,
+    "color": [215, 25, 28, 255]
+}, {
+    "value": 18666,
+    "color": [253, 174, 97, 255]
+}, {
+    "value": 21903,
+    "color": [255, 255, 191, 255]
+}, {
+    "value": 24175,
+    "color": [171, 217, 233, 255]
+}, {
+    "value": 26095,
+    "color": [44, 123, 182, 255]
+}]
+
+const defaultSym = {
+    type: "simple-fill",
+    outline: {
+        color: [128, 128, 128, 0.2],
+        width: "0.5px"
+    }
+};
+
+const defaultRenderer = {
+    type: "simple",
+    symbol: defaultSym,
+    visualVariables: [{
+        type: "color",
+        field: "dep",
+        stops: defaultStops
+    }]
+};
+
 $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data) {
 
     esriConfig.apiKey = data['access_token'];
 
     //Loads in layers
     const buildings = new FeatureLayer({
-        visible: false,
         url: "https://services5.arcgis.com/N6Nhpnxaedla81he/arcgis/rest/services/MK_Buildings/FeatureServer/"
     });
 
     const data_map = new FeatureLayer({
-        visible: false,
+        renderer: defaultRenderer,
         url: 'https://services5.arcgis.com/N6Nhpnxaedla81he/arcgis/rest/services/MK_Data/FeatureServer/'
     });
 
@@ -199,10 +234,6 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
                     rendererResult.stops = rendererResult.renderer.visualVariables[0].stops = stops;
                     data_map.renderer = rendererResult.renderer;
 
-                    //Shows map
-                    data_map.visible = true;
-                    buildings.visible = true;
-
                     //Gets histogram query
                     //Accounts for None/Null glitch in tundra
                     if (current_focus == 'tundra') {
@@ -272,6 +303,7 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
 
                     //Sets colour stops
                     slider.stops = stops;
+                    console.log(slider.stops);
 
                     //Adds in context to slider
                     var left_side = true;
