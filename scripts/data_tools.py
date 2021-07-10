@@ -32,7 +32,7 @@ def readSheet(workbook, worksheet, id_col, data_col, writer=False, skipextra=Fal
 		#For Soc Mob
 		if val == '.':
 			val = None
-
+		
 		store[row[id_col].value] = val
 
 		if writer:

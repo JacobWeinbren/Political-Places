@@ -47,7 +47,7 @@ function selectChoices() {
     if (choice == "Social Mobility") {
         $('#title').text("Higher Education Participation (TUNDRA)");
         current_focus = 'tundra';
-        range = [0.2, 0.65];
+        range = [0.2, 0.6];
         median = 0.421;
         bins = 15;
         theme = colorRamps.byName("Pink and Blue 1");
@@ -133,15 +133,21 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
         };
 
         //Sets histogram params
-        const colorParams = {
+        var colorParams = {
             layer: data_map,
-            valueExpression: "$feature." + current_focus,
-            view: view,
             theme: "above-and-below",
             outlineOptimizationEnabled: true,
             minValue: range[0],
-            maxValue: range[1]
+            maxValue: range[1],
+            view: view
         };
+
+        //Tundra 0 is equal to null, something to do with the json to feature in arcgis
+        if (current_focus == 'dep') {
+            colorParams.valueExpression = "$feature." + current_focus
+        } else {
+            colorParams.valueExpression = "if ($feature." + current_focus + " != 0) {return $feature." + current_focus + "} else {return 'test';}"
+        }
 
         //Filter the map to the constituency
         var query = new Query();
@@ -154,7 +160,14 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
             var features = results.features;
             var temp_array = [];
             for (var i = 0; i < features.length; i++) {
-                temp_array.push(features[i]['attributes'][current_focus]);
+                var temp_item = features[i]['attributes'][current_focus]
+                if (current_focus == 'tundra') {
+                    if (temp_item != 0) {
+                        temp_array.push(temp_item);
+                    }
+                } else {
+                    temp_array.push(temp_item);
+                }
             }
             temp_array = summary(temp_array, false);
 
@@ -191,10 +204,19 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
                     buildings.visible = true;
 
                     //Gets histogram query
-                    if (current_constituency == "Combined") {
-                        expression = "$feature." + current_focus;
+                    //Accounts for None/Null glitch in tundra
+                    if (current_focus == 'tundra') {
+                        if (current_constituency == "Combined") {
+                            expression = "if ($feature." + current_focus + " != 0) {return $feature." + current_focus + "} else {return 'test';}";
+                        } else {
+                            expression = "if (($feature.new_con == '" + current_constituency + "' || $feature.old_con == '" + current_constituency + "') && ($feature." + current_focus + " != 0)) {return $feature." + current_focus + ";} else {return 'test';}";
+                        }
                     } else {
-                        expression = "if ($feature.new_con =='" + current_constituency + "' || $feature.old_con == '" + current_constituency + "') {return $feature." + current_focus + ";} else {return 'test';}";
+                        if (current_constituency == "Combined") {
+                            expression = "$feature." + current_focus
+                        } else {
+                            expression = "if ($feature.new_con == '" + current_constituency + "' || $feature.old_con == '" + current_constituency + "') {return $feature." + current_focus + ";} else {return 'test';}";
+                        }
                     }
 
                     return histogram({
@@ -207,7 +229,6 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
                     });
                 })
                 .then((histogramResult) => {
-                    console.log(rendererResult, histogramResult);
 
                     //Establishes slider
                     const slider = ColorSlider.fromRendererResult(
