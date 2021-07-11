@@ -12,32 +12,34 @@ const production = !process.env.ROLLUP_WATCH;
 //MK Template and inputs
 var mk_inputs = ['src/mk/mob_dep/main.js', 'src/mk/classification/main.js']
 var mk_default = {
-    input: 'src/mk/classification/main.js',
     output: [{
-        dir: 'dist/mk/classification',
         format: 'es',
         chunkFileNames: 'chunks/[name]-[hash].js'
     }],
     treeshake: production,
-    preserveEntrySignatures: false,
-    plugins: [
+    preserveEntrySignatures: false
+}
+
+function mk_plugins() {
+    return [
         commonjs(),
         resolve(),
-        postcss({
-            extensions: ['.css'],
-            extract: true
-        }),
         copy({
             targets: [{
-                src: path.resolve(__dirname, 'node_modules/@esri/calcite-components/dist/calcite/assets'),
-                dest: path.resolve(__dirname, 'dist/mk')
+                src: path.resolve('node_modules/@esri/calcite-components/dist/calcite/assets'),
+                dest: path.resolve('dist/mk')
             }]
+        }),
+        postcss({
+            extensions: ['.css'],
+            extract: true,
+            minimize: true
         }),
         production && terser()
     ]
 }
 
-//Sets current week project
+//Sets current project
 var export_list = []
 var current_focus = 'src/mk/classification/main.js'
 var current_template = deepcopy(mk_default);
@@ -55,11 +57,16 @@ for (var i = 0; i < current_inputs.length; i++) {
 
     //Get current file name
     var file_name = current_inputs[i]
+    file_name = path.resolve(file_name)
     temp_item.input = file_name
 
     //Get output
     var dir = path.dirname(file_name);
     dir = dir.replace("src/", "dist/");
+    dir = path.resolve(dir);
+
+    //PostCSS
+    temp_item.plugins = mk_plugins();
 
     //Add to result list
     temp_item.output[0].dir = dir;
