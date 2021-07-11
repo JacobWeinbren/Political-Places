@@ -2,16 +2,15 @@
 import '@esri/calcite-components/dist/calcite/calcite.css';
 import { defineCustomElements, setAssetPath } from '@esri/calcite-components/dist/custom-elements';
 
-setAssetPath('dist/mk/slider/assets');
+setAssetPath('dist/mk/assets');
 defineCustomElements();
 
 //Loads in jquery and base styling
-import './style.css';
 import jQuery from "jquery";
 window.$ = window.jQuery = jQuery;
 
-//Loads in statistics
-import summary from 'summary'
+//Loads in styles
+import './style.css';
 
 //Loads in arcgis
 import esriConfig from '@arcgis/core/config';
