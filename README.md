@@ -10,7 +10,7 @@ Navigating the UK constituencies can be tricky, but in every place is a fascinat
 
 - Uses pipreqs for requirements.txt
 
-##Get Repo 
+## Get Repo 
 
 1. Clone directory through ```git clone https://github.com/JacobWeinbren/Political-Places```
 
