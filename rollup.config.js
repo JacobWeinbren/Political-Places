@@ -6,8 +6,8 @@ import postcss from 'rollup-plugin-postcss';
 import deepcopy from 'deepcopy';
 import path from 'path';
 
-//const production = !process.env.ROLLUP_WATCH;
-const production = true;
+const production = !process.env.ROLLUP_WATCH;
+//const production = true;
 
 //MK Template and inputs
 var mk_inputs = ['src/mk/mob_dep/main.js', 'src/mk/classification/main.js']
