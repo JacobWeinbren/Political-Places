@@ -1,13 +1,5 @@
-//Loads in calcite
-import '@esri/calcite-components/dist/calcite/calcite.css';
-import { defineCustomElements, setAssetPath } from '@esri/calcite-components/dist/custom-elements';
-
-setAssetPath('dist/mk/assets');
-defineCustomElements();
-
-//Loads in jquery and base styling
-import jQuery from "jquery";
-window.$ = window.jQuery = jQuery;
+//Loads in Calcite, JQuery, common styles
+import '../common.js'
 
 //Loads in styles
 import './style.css';
@@ -15,7 +7,6 @@ import './style.css';
 //Loads in statistics
 import summary from 'summary';
 
-//Loads in arcgis
 import esriConfig from '@arcgis/core/config';
 import Map from '@arcgis/core/Map';
 import MapView from '@arcgis/core/views/MapView';
