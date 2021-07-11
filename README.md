@@ -10,15 +10,25 @@ Navigating the UK constituencies can be tricky, but in every place is a fascinat
 
 - Uses pipreqs for requirements.txt
 
-## Install
+##Get Repo 
 
-1. cd into the github repo clone
+1. Clone directory through ```git clone https://github.com/JacobWeinbren/Political-Places```
 
-2. Run ```pip install -r requirements.txt```
+2. Enter repo through change directory - ```cd Political-Places```
 
-3. Run ```python scripts/download.py``` to download files to ```input``` dir
+## Create Data
 
-4. Carry on with [England](England.md) (other nations in progress)
+1. Run ```pip install -r requirements.txt```
+
+2. Run ```python scripts/download.py``` to download files to ```input``` dir
+
+3. Carry on with [England](England.md) (other nations in progress)
+
+## Run Site
+
+1. Install dependencies ```npm i -S```
+
+2. Run ```npm run build```
 
 ## Boundaries 
 
