@@ -12,6 +12,9 @@ window.$ = window.jQuery = jQuery;
 //Loads in styles
 import './style.css';
 
+//Loads in statistics
+import summary from 'summary';
+
 //Loads in arcgis
 import esriConfig from '@arcgis/core/config';
 import Map from '@arcgis/core/Map';

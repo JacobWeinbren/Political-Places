@@ -1,5 +1,10 @@
 {
   "name": "Political-Places",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JacobWeinbren/Political-Places"
+  },
+  "license": "MIT",
   "devDependencies": {
     "@rollup/plugin-commonjs": "latest",
     "@rollup/plugin-node-resolve": "latest",
