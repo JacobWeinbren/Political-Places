@@ -1,9 +1,10 @@
+numpy==1.21.0
+pandas==1.2.5
 ujson==4.0.2
 geopandas==0.9.0
-requests==2.25.1
-progressist==0.1.0
 tqdm==4.61.1
+progressist==0.1.0
 openpyxl==3.0.7
-pandas==1.2.5
+requests==2.25.1
 pyexcel==0.6.6
 GitPython==3.1.18
