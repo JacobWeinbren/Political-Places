@@ -7,6 +7,7 @@ import deepcopy from 'deepcopy';
 import path from 'path';
 
 const production = !process.env.ROLLUP_WATCH;
+//const production = true;
 
 //MK Template and inputs
 var mk_inputs = ['src/mk/mob_dep/main.js', 'src/mk/classification/main.js']
@@ -48,18 +49,17 @@ if (!production) {
     current_inputs = [current_focus];
 }
 
-for (var i = 0; i < mk_inputs.length; i++) {
+for (var i = 0; i < current_inputs.length; i++) {
     //Deep clone
     var temp_item = deepcopy(current_template);
 
     //Get current file name
     var file_name = current_inputs[i]
-    temp_item.input = path.resolve(__dirname, file_name);
+    temp_item.input = file_name
 
     //Get output
     var dir = path.dirname(file_name);
-    dir = dir.replace("src/", "dist/")
-    dir = path.resolve(__dirname, dir);
+    dir = dir.replace("src/", "dist/");
 
     //Add to result list
     temp_item.output[0].dir = dir;
