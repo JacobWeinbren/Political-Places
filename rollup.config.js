@@ -66,7 +66,7 @@ for (var i = 0; i < current_inputs.length; i++) {
     dir = dir.replace("src/", "dist/");
     dir = path.resolve(dir);
 
-    //PostCSS
+    //Plugins
     temp_item.plugins = mk_plugins();
 
     //Add to result list
