@@ -20,6 +20,7 @@ var mk_default = {
     preserveEntrySignatures: false
 }
 
+//MK Plugins (to generate instances of plugins)
 function mk_plugins() {
     return [
         commonjs(),
