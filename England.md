@@ -15,7 +15,7 @@ Guides for all other nations coming, when we do articles on them.
 
 3. Select your constituencies and then export their features through ```Data -> Export Features```.
 
-4 Give old constituencies the ```old_con``` attribute, and do the same with new constituencies, ```new_con```. You can do this in ```Data -> Attribute Table```, setting the value type to ```text```.
+4. Give old constituencies the ```old_con``` attribute, and do the same with new constituencies, ```new_con```. You can do this in ```Data -> Attribute Table```, setting the value type to ```text```.
 
 5. ```Overlay (Union)``` the constituencies (this makes smaller features that represent where they overlap).
 
@@ -27,7 +27,7 @@ Guides for all other nations coming, when we do articles on them.
 
 9. Upload two layers - Deprivation & Mobility + Buildings. You can do this by right clicking the layers on the left toolbar and selecting sharing web layer (vector tile). Remember to select WSG84 Projection
 
-10. The resulting map should look similar to the following.
+10. You will likely need to run some basic analysis. You can use ```scripts/analysis.py``` for this. The resulting map should look similar to the following.
 
 ![Map of MK Constituencies on ArcGIS](result.png?raw=true "Map of MK Constituencies on ArcGIS")
 
@@ -36,4 +36,8 @@ Guides for all other nations coming, when we do articles on them.
 
 1. Run ```JSON to Features``` for OAC (Output Area Classification) ```.geojson``` files.
 
-2. Upload one layer for the Area Classifications
+2. Run overlay, attribution culling - like done previously
+
+3. Upload Area Classifications layer
+
+4. Upload ```eng_oac.csv``` 
