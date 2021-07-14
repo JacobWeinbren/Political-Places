@@ -2,9 +2,9 @@
 
 Guides for all other nations coming, when we do articles on them.
 
-1. ```cd``` into the dir root ```Political-Places```
+    1. ```cd``` into the dir root ```Political-Places```
 
-2. Run ```python scripts/eng.py``` to add data to geojson maps and collect csv files to ```output/eng/```
+    2. Run ```python scripts/eng.py``` to add data to geojson maps and collect csv files to ```output/eng/```
 
 ## Generate deprivation/mobility maps
 
@@ -32,6 +32,6 @@ Guides for all other nations coming, when we do articles on them.
 
 ## Generate the classification map
 
-   1. Run ```JSON to Features``` for OAC (Output Area Classification) ```.geojson``` files.
+    1. Run ```JSON to Features``` for OAC (Output Area Classification) ```.geojson``` files.
 
-   2. Upload one layer for the Area Classifications
+    2. Upload one layer for the Area Classifications
