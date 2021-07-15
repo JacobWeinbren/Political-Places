@@ -24,6 +24,11 @@ def readSheet(workbook, worksheet, id_col, data_col, writer=False, skipextra=Fal
 		for i in range(skipextra):
 			next(iterinput)
 
+	#Writes header for csv
+	if writer:
+		writer.writerow([worksheet])
+
+	#Collects values from sheet
 	store = {}
 
 	for value, row in enumerate(iterinput):
