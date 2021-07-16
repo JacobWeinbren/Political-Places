@@ -17,15 +17,15 @@ Guides for all other nations coming, when we do articles on them.
 
 4. Give old constituencies the ```old_con``` attribute, and do the same with new constituencies, ```new_con```. You can do this in ```Data -> Attribute Table```, setting the value type to ```text```.
 
-5. ```Overlay (Union)``` the constituencies (this makes smaller features that represent where they overlap).
+5. ```Overlay (Union)``` the constituencies (this makes smaller features that represent where they overlap). The order is important 
 
 6. Intersect buildings with combined constituencies, keeping ```new_con``` and ```old_con```.
 
 7. Intersect ```deprivation``` and ```mobility``` with combined constituencies. keep ```old_con```, ```new_con``` + ```dep```/```mob``` attrs and remove the remainder. This works because they are both LSOA data.
 
-8. Preview layer blend ```colour burn``` in appearance 
+8. Preview layer blend ```colour burn``` in appearance .
 
-9. Upload two layers - Deprivation & Mobility + Buildings. You can do this by right clicking the layers on the left toolbar and selecting sharing web layer (vector tile). Remember to select WSG84 Projection
+9. Upload two layers - Deprivation & Mobility + Buildings. You can do this by right clicking the layers on the left toolbar and selecting sharing web layer (vector tile). Remember to select WSG84 Projection.
 
 10. You will likely need to run some basic analysis. You can use ```scripts/analysis.py``` for this. The resulting map should look similar to the following.
 
@@ -36,8 +36,12 @@ Guides for all other nations coming, when we do articles on them.
 
 1. Run ```JSON to Features``` for OAC (Output Area Classification) ```.geojson``` files.
 
-2. Run overlay, attribution culling - like done previously
+2. Run intersect with buildings and OAC layer.
 
-3. Upload Area Classifications layer
+3. Manually cull attributes, keeping only the classification code.
 
-4. Upload ```eng_oac.csv``` 
+4. Upload Area Classifications layer. Remember to select WSG84 Projection.
+
+5. Upload ```eng_oac.csv``` as table.
+
+6. Upload ```classification.csv``` as table.

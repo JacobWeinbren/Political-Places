@@ -10,6 +10,8 @@ Navigating the UK constituencies can be tricky, but in every place is a fascinat
 
 - Uses pipreqs for requirements.txt
 
+- Colour ramps from [Goedhart](https://thenode.biologists.com/data-visualization-with-flying-colors/research/) and [ArcGIS Colour Ramps](https://developers.arcgis.com/javascript/latest/visualization/symbols-color-ramps/esri-color-ramps/)
+
 ## Get Repo 
 
 1. Clone directory through ```git clone https://github.com/JacobWeinbren/Political-Places```
@@ -62,6 +64,7 @@ Reference boundaries, full resolution. Converted to geojson in QGIS.
 | Census Area Classification OAC Clusters | 2011 | Classification | [Link](https://www.ons.gov.uk/methodology/geography/geographicalproducts/areaclassifications/2011areaclassifications/datasets) | cen_uk |  |
 | LSOA Population old | 2009 | Population | [Link](https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/lowersuperoutputareamidyearpopulationestimates) | pop_old |
 | LSOA Population new | 2019 | Population | [Link](https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/lowersuperoutputareamidyearpopulationestimates) | pop_new |
+| OAC Classification Descriptions | 2015  | [Link](https://www.ons.gov.uk/methodology/geography/geographicalproducts/areaclassifications/2011areaclassifications/penportraitsandradialplots) | des_uk | 
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)

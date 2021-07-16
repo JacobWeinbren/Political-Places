@@ -1,6 +1,7 @@
 import os
 from get_root import inputdir, outputdir
 from data_tools import addData, createCsv, readSheet
+from oac_reader import writeClassification
 from pop import pop
 
 if not os.path.exists(inputdir):
@@ -31,10 +32,15 @@ if not os.path.exists(outputdir + 'eng/oac.geojson'):
 if not os.path.exists(outputdir + 'eng/pop.xlsx'):
 	pop()
 
-
 #Pop
 if not os.path.exists(outputdir + 'eng/pop.geojson'):
 	addData(lsoa[0], lsoa[1], outputdir + 'eng/pop.xlsx', 'pop', 0, 1, 'pop', outputdir + 'eng/pop.geojson')
+
+#Classification Desc
+if not os.path.exists(outputdir + 'eng/classification.csv'):
+	with open(outputdir + 'eng/classification.csv', 'w') as file: 
+		writer = createCsv(file)
+		writeClassification(writer)
 
 """
 England Wide Data
@@ -63,3 +69,4 @@ if not os.path.exists(outputdir + 'eng/eng_pop.csv'):
 	with open(outputdir + 'eng/eng_pop.csv', 'w') as file: 
 		writer = createCsv(file)
 		readSheet(outputdir + 'eng/pop.xlsx', 'pop', 0, 1, writer)
+		writeClassification(writer)

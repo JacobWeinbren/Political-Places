@@ -176,7 +176,15 @@ download(
 	"UK Classification"
 )
 
-#UK Classification
+#UK Classification Description
+download(
+	"des_uk", 
+	"https://www.ons.gov.uk/file?uri=/methodology/geography/geographicalproducts/areaclassifications/2011areaclassifications/penportraitsandradialplots/penportraits.pdf", 
+	"UK Classification Description",
+	"pdf"
+)
+
+#OA MAp
 download(
 	"bui_uk", 
 	"https://api.os.uk/downloads/v1/products/VectorMapDistrict/downloads?area=GB&format=GeoPackage&redirect", 
