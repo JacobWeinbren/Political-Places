@@ -6,6 +6,7 @@ import postcss from 'rollup-plugin-postcss';
 import deepcopy from 'deepcopy';
 import path from 'path';
 import json from '@rollup/plugin-json';
+import includePaths from 'rollup-plugin-includepaths';
 
 const production = !process.env.ROLLUP_WATCH;
 //const production = true;
@@ -37,6 +38,9 @@ function mk_plugins() {
             extract: true,
             minimize: true
         }),
+        includePaths({
+            paths: ['output'],
+        }),
         json(),
         production && terser()
     ]
@@ -44,7 +48,7 @@ function mk_plugins() {
 
 //Sets current project
 var export_list = []
-var current_focus = 'src/mk/mob_dep/main.js'
+var current_focus = 'src/mk/classification/main.js'
 var current_template = deepcopy(mk_default);
 var current_inputs = mk_inputs;
 var result;

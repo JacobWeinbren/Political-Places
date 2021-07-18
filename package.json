@@ -26,6 +26,7 @@
     "color-string": "^1.6.0",
     "deepcopy": "^2.1.0",
     "postcss": "^8.3.5",
+    "rollup-plugin-includepaths": "^0.2.4",
     "simple-get-json": "^8.1.1",
     "summary": "^2.1.0"
   },
