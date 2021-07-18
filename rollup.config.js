@@ -6,7 +6,6 @@ import postcss from 'rollup-plugin-postcss';
 import deepcopy from 'deepcopy';
 import path from 'path';
 import json from '@rollup/plugin-json';
-import * as fs from 'fs';
 
 const production = !process.env.ROLLUP_WATCH;
 //const production = true;
@@ -24,12 +23,6 @@ var mk_default = {
 
 //MK Plugins (to generate instances of plugins)
 function mk_plugins() {
-    if (!fs.existsSync('src/mk/classification/classification.json')) {
-        fs.copyFile(path.resolve('output/eng/classification.json'), path.resolve('src/mk/classification/classification.json'), (err) => {
-            if (err) throw err;
-        });
-    }
-
     return [
         commonjs(),
         copy({

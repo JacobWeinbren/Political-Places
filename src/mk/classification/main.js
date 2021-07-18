@@ -13,7 +13,7 @@ import GroupLayer from '@arcgis/core/layers/GroupLayer';
 import Query from "@arcgis/core/rest/support/Query";
 
 //Loads in descriptions
-import classification from './classification.json';
+import classification from '../../../output/eng/classification.json';
 const class_data = classification['data'];
 
 //Loads in chart 
