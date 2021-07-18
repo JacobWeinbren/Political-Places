@@ -1,6 +1,7 @@
 .DS_Store
 input/**/**
 output/**/**
+!output/eng/classification.json
 __pycache__
 node_modules
 dist/**/**.css
