@@ -307,8 +307,6 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
                     //Updates slider
                     var right_side = true;
 
-                    console.log(slider);
-
                     slider.set({
                         labelFormatFunction: (value, type) => {
                             if (right_side) {
