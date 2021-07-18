@@ -239,17 +239,9 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
                     //Gets histogram query
                     //Accounts for None/Null glitch in tundra
                     if (current_focus == 'tundra') {
-                        if (current_constituency == "Combined") {
-                            expression = "if ($feature." + current_focus + " != 0) {return $feature." + current_focus + "} else {return 'test';}";
-                        } else {
-                            expression = "if (($feature.new_con == '" + current_constituency + "' || $feature.old_con == '" + current_constituency + "') && ($feature." + current_focus + " != 0)) {return $feature." + current_focus + ";} else {return 'test';}";
-                        }
+                        expression = "if ($feature." + current_focus + " != 0) {return $feature." + current_focus + ";} else {return 'test';}";
                     } else {
-                        if (current_constituency == "Combined") {
-                            expression = "$feature." + current_focus
-                        } else {
-                            expression = "if ($feature.new_con == '" + current_constituency + "' || $feature.old_con == '" + current_constituency + "') {return $feature." + current_focus + ";} else {return 'test';}";
-                        }
+                        expression = "$feature." + current_focus
                     }
 
                     return histogram({
@@ -257,8 +249,10 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
                         valueExpression: expression,
                         view: view,
                         numBins: bins,
+                        classificationMethod: "equal-interval",
                         minValue: range[0],
                         maxValue: range[1],
+                        features: features
                     });
                 })
                 .then((histogramResult) => {
@@ -306,6 +300,8 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
 
                     //Updates slider
                     var right_side = true;
+
+                    console.log(slider);
 
                     slider.set({
                         labelFormatFunction: (value, type) => {
