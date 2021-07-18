@@ -31,7 +31,6 @@ var slider = null;
 
 function selectChoices() {
     if (choice == "Deprivation") {
-        $('#title').text("Deprivation Ranking");
         current_focus = 'dep';
         range = [0, 32844];
         median = 18422;
@@ -40,7 +39,6 @@ function selectChoices() {
         colors = theme.colors;
     }
     if (choice == "Social Mobility") {
-        $('#title').text("Higher Education Participation (TUNDRA)");
         current_focus = 'tundra';
         range = [0.2, 0.6];
         median = 0.421;
@@ -348,6 +346,13 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
                             }]
                         }
                     });
+
+                    if (choice == "Social Mobility") {
+                        $('#title').html("Higher Education Participation (TUNDRA)<br>" + $($('#dropdown').prop('selectedItems')[0]).text());
+                    }
+                    if (choice == "Deprivation") {
+                        $('#title').html("Deprivation Ranking<br>" + $($('#dropdown').prop('selectedItems')[0]).text());
+                    }
                 })
                 .catch((error) => {
                     console.error("Error: ", error);
