@@ -41,7 +41,3 @@ Guides for all other nations coming, when we do articles on them.
 3. Manually cull attributes, keeping only the classification code.
 
 4. Upload Area Classifications layer. Remember to select WSG84 Projection.
-
-5. Upload ```eng_oac.csv``` as table.
-
-6. Upload ```classification.csv``` as table.

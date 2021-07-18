@@ -1,16 +1,18 @@
 """
 Returns 5 values from a data list
 """
-import statistics, numpy
+import statistics, numpy, ujson
 
 content = range(0,32844)
 median = statistics.median(content)
 quartile = numpy.quantile(content, .25)
 
 def readFile(filename):
-    #Reads files
-    with open(filename) as f:
-        content = f.readlines()
+    #Extracts list from json
+    with open(filename) as json_file:
+        data = ujson.load(json_file)
+        key = list(data.keys())[0]
+        data = data[key]
 
     parsed_content = []
     for x in content:
@@ -21,4 +23,4 @@ def readFile(filename):
             
     print(statistics.median(parsed_content))
 
-readFile('../output/eng/eng_mob.csv')
+readFile('../output/eng/eng_mob.json')

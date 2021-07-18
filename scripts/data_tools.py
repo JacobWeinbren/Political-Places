@@ -9,7 +9,7 @@ A collection of tools for data processing
 """
 Reads a sheet, and returns. Writing to csv is optional
 """
-def readSheet(workbook, worksheet, id_col, data_col, writer=False, skipextra=False):
+def readSheet(workbook, worksheet, id_col, data_col, writer=False, skipextra=False, filter_country=None):
 	print("Reading", workbook, worksheet)
 	
 	wb = load_workbook(filename = workbook, data_only = 'True')
@@ -24,26 +24,33 @@ def readSheet(workbook, worksheet, id_col, data_col, writer=False, skipextra=Fal
 		for i in range(skipextra):
 			next(iterinput)
 
-	#Writes header for csv
-	if writer:
-		writer.writerow([worksheet])
+	#Collects value for storage
+	data = {}
 
-	#Collects values from sheet
-	store = {}
+	if writer:
+		data = {worksheet: []}
 
 	for value, row in enumerate(iterinput):
+
+		temp_id = row[id_col].value
+
+		#Skips if not matching country
+		if filter_country:
+			if temp_id[0] != filter_country:
+			 	continue
+
 		val = row[data_col].value 
 
 		#For Soc Mob
 		if val == '.':
 			val = None
 		
-		store[row[id_col].value] = val
+		data[temp_id] = val
 
 		if writer:
-			writer.writerow([val])
+			data[worksheet].append(val)
 
-	return store
+	return data
 
 """
 Creates empty csv file writer

@@ -1,4 +1,4 @@
-import os
+import os, ujson
 from get_root import inputdir, outputdir
 from data_tools import addData, createCsv, readSheet
 from oac_reader import writeClassification
@@ -37,36 +37,34 @@ if not os.path.exists(outputdir + 'eng/pop.geojson'):
 	addData(lsoa[0], lsoa[1], outputdir + 'eng/pop.xlsx', 'pop', 0, 1, 'pop', outputdir + 'eng/pop.geojson')
 
 #Classification Desc
-if not os.path.exists(outputdir + 'eng/classification.csv'):
-	with open(outputdir + 'eng/classification.csv', 'w') as file: 
-		writer = createCsv(file)
-		writeClassification(writer)
+if not os.path.exists(outputdir + 'eng/classification.json'):
+	with open(outputdir + 'eng/classification.json', 'w', encoding='utf-8') as f:
+		ujson.dump(writeClassification(), f)
 
 """
 England Wide Data
 """
 
 #Dep
-if not os.path.exists(outputdir + 'eng/eng_dep.csv'):
-	with open(outputdir + 'eng/eng_dep.csv', 'w') as file: 
-		writer = createCsv(file)
-		readSheet(inputdir + 'dep_eng/England Deprivation.xlsx', 'IMD2019', 0, 4, writer) 
+if not os.path.exists(outputdir + 'eng/eng_dep.json'):
+	with open(outputdir + 'eng/eng_dep.json', 'w', encoding='utf-8') as f:
+		data = readSheet(inputdir + 'dep_eng/England Deprivation.xlsx', 'IMD2019', 0, 4, True, filter_country='E') 
+		ujson.dump(data, f)
 
 #TUNDRA
-if not os.path.exists(outputdir + 'eng/eng_mob.csv'):
-	with open(outputdir + 'eng/eng_mob.csv', 'w') as file: 
-		writer = createCsv(file)
-		readSheet(inputdir + 'mob_eng/England Mobility.xlsx', 'LSOA Quintile', 0, 2, writer)
+if not os.path.exists(outputdir + 'eng/eng_mob.json'):
+	with open(outputdir + 'eng/eng_mob.json', 'w', encoding='utf-8') as f:
+		data = readSheet(inputdir + 'mob_eng/England Mobility.xlsx', 'LSOA Quintile', 0, 2, True, filter_country='E')
+		ujson.dump(data, f)
 
 #OAC
-if not os.path.exists(outputdir + 'eng/eng_oac.csv'):
-	with open(outputdir + 'eng/eng_oac.csv', 'w') as file: 
-		writer = createCsv(file)
-		readSheet(inputdir + 'cen_uk/2011 OAC Clusters and Names Excel v2.xlsx', '2011 OAC Clusters', 0, 9, writer)
+if not os.path.exists(outputdir + 'eng/eng_oac.json'):
+	with open(outputdir + 'eng/eng_oac.json', 'w', encoding='utf-8') as f:
+		data = readSheet(inputdir + 'cen_uk/2011 OAC Clusters and Names Excel v2.xlsx', '2011 OAC Clusters', 0, 9, True, filter_country='E')
+		ujson.dump(data, f)
 
 #Pop
-if not os.path.exists(outputdir + 'eng/eng_pop.csv'):
-	with open(outputdir + 'eng/eng_pop.csv', 'w') as file: 
-		writer = createCsv(file)
-		readSheet(outputdir + 'eng/pop.xlsx', 'pop', 0, 1, writer)
-		writeClassification(writer)
+if not os.path.exists(outputdir + 'eng/eng_pop.json'):
+	with open(outputdir + 'eng/eng_pop.json', 'w', encoding='utf-8') as f:
+		data = readSheet(outputdir + 'eng/pop.xlsx', 'pop', 0, 1, True, filter_country='E')
+		ujson.dump(data, f)

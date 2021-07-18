@@ -5,6 +5,7 @@ import copy from 'rollup-plugin-copy';
 import postcss from 'rollup-plugin-postcss';
 import deepcopy from 'deepcopy';
 import path from 'path';
+import json from '@rollup/plugin-json';
 
 const production = !process.env.ROLLUP_WATCH;
 //const production = true;
@@ -36,6 +37,7 @@ function mk_plugins() {
             extract: true,
             minimize: true
         }),
+        json(),
         production && terser()
     ]
 }

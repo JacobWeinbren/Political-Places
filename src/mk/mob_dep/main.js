@@ -7,6 +7,7 @@ import './style.css';
 //Loads in statistics
 import summary from 'summary';
 
+//Loads in Esri
 import esriConfig from '@arcgis/core/config';
 import Map from '@arcgis/core/Map';
 import MapView from '@arcgis/core/views/MapView';
@@ -119,12 +120,15 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
         layers: [group]
     });
 
-    const view = new MapView({
+    var view = new MapView({
         map: map,
         zoom: 11,
         center: [-0.75, 52.04],
         container: 'map',
     });
+
+    view.constraints.minZoom = 10;
+    view.constraints.maxZoom = 18;
 
     //Filters
     view.whenLayerView(data_map).then((layerView) => {

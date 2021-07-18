@@ -1,6 +1,7 @@
 from pdfminer.high_level import extract_text
 from get_root import inputdir, outputdir
 import re, os
+import ujson
 
 text = extract_text(inputdir + 'des_uk/UK Classification Description.pdf')
 
@@ -30,13 +31,13 @@ count = len(titles)
 text = ' '.join(text.split())
 
 #Gets descriptions
-def writeClassification(writer):
+def writeClassification():
 
 	#Headers
-	writer.writerow(['Supergroup', 'Group', 'Subgroup', 'Title', 'Description'])
 	supergroup = ''
 	group = ''
 	subgroup = ''
+	data = {'data': []}
 
 	for index in range(count):
 
@@ -67,4 +68,13 @@ def writeClassification(writer):
 			group = code[1]
 			subgroup = code[2]
 
-		writer.writerow([supergroup, group, subgroup, titles[index], desc])
+		data['data'].append({
+			"title": title,
+			"code": code,
+			"desc": desc,
+			"supergroup": supergroup,
+			"group": group,
+			"subgroup": subgroup
+		})
+	
+	return data
