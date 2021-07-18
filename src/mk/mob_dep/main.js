@@ -27,6 +27,7 @@ var median;
 var theme;
 var bins;
 var colors;
+var slider = null;
 
 function selectChoices() {
     if (choice == "Deprivation") {
@@ -34,7 +35,7 @@ function selectChoices() {
         current_focus = 'dep';
         range = [0, 32844];
         median = 18422;
-        bins = 20;
+        bins = 15;
         theme = colorRamps.byName("Blue and Red 9");
         colors = theme.colors;
     }
@@ -149,10 +150,6 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
     //Creates continuous renderer
     function generateRenderer(layerView) {
 
-        //Resets the slider and histogram
-        $('#slider').html('');
-        $('#dephisto').hide();
-
         //Establishes variables
         var expression;
         var rendererResult;
@@ -261,101 +258,99 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
                         view: view,
                         numBins: bins,
                         minValue: range[0],
-                        maxValue: range[1]
+                        maxValue: range[1],
                     });
                 })
                 .then((histogramResult) => {
 
                     //Establishes slider
-                    const slider = ColorSlider.fromRendererResult(
-                        rendererResult,
-                        histogramResult
-                    );
+                    if (slider == null) {
+                        slider = ColorSlider.fromRendererResult(
+                            rendererResult,
+                            histogramResult
+                        );
 
-                    slider.set({
-                        container: "slider",
-                        primaryHandleEnabled: true,
-                        handlesSyncedToPrimary: true,
-                    });
+                        view.ui.add("dephisto", "bottom-left");
+                        $('#dephisto').show();
 
-                    //Sets labels
-                    slider.histogramConfig.average = null;
-                    slider.histogramConfig.standardDeviation = null;
+                        //Event handler for slider on colour slider move
+                        function changeEventHandler() {
+                            const renderer = data_map.renderer.clone();
+                            const colorVariable = renderer.visualVariables[0].clone();
+                            const outlineVariable = renderer.visualVariables[1];
+                            colorVariable.stops = slider.stops;
+                            renderer.visualVariables = [colorVariable, outlineVariable];
+                            data_map.renderer = renderer;
+                        }
 
-                    slider.histogramConfig.dataLines = [{
-                        value: temp_array.quartile(0.25),
-                        label: titles[0]
-                    }, {
-                        value: temp_array.median(),
-                        label: titles[1]
-                    }, {
-                        value: median,
-                        label: titles[2]
-                    }, {
-                        value: temp_array.quartile(0.75),
-                        label: titles[3]
-                    }];
+                        slider.set({
+                            container: "slider",
+                            primaryHandleEnabled: true,
+                            handlesSyncedToPrimary: true
+                        });
 
-                    //Smaller lines
-                    slider.histogramConfig.dataLineCreatedFunction = (
-                        lineElement,
-                        labelElement,
-                        index
-                    ) => {
-                        $(lineElement).text(titles[index]);
-                        $(labelElement).attr("x2", "66%");
-                    };
+                        slider.on(
+                            ["thumb-change", "thumb-drag", "min-change", "max-change"],
+                            changeEventHandler
+                        );
 
-                    //Sets colour stops
-                    slider.stops = stops;
+                        slider.histogramConfig.dataLineCreatedFunction = function(lineElement, labelElement, index) {
+                            $(lineElement).text(titles[index]);
+                            $(labelElement).attr("x2", "66%");
+                        };
+
+                        slider.histogramConfig.average = null;
+                        slider.histogramConfig.standardDeviation = null;
+                    } else {
+                        slider.updateFromRendererResult(rendererResult, histogramResult);
+                    }
 
                     //Adds in labels to the slider
-                    var left_side = true;
+                    var right_side = true;
 
-                    slider.labelFormatFunction = (value, type) => {
-                        if (left_side) {
-                            if (type == "max") {
-                                if (current_focus == "dep") {
-                                    return "Least Deprived";
+                    slider.set({
+                        labelFormatFunction: (value, type) => {
+                            if (right_side) {
+                                if (type == "max") {
+                                    if (current_focus == "dep") {
+                                        return "Least Deprived";
+                                    }
+                                    if (current_focus == "tundra") {
+                                        return "Most Socially Mobile";
+                                    }
                                 }
-                                if (current_focus == "tundra") {
-                                    return "Most Socially Mobile";
+                                if (type == "value") {
+                                    return ""
                                 }
-
+                                if (type == "min") {
+                                    if (current_focus == "dep") {
+                                        return "Most Deprived";
+                                    }
+                                    if (current_focus == "tundra") {
+                                        return "Least Socially Mobile";
+                                    }
+                                    right_side = false;
+                                }
                             }
-                            if (type == "value") {
-                                return ""
-                            }
-                            if (type == "min") {
-                                if (current_focus == "dep") {
-                                    return "Most Deprived";
-                                }
-                                if (current_focus == "tundra") {
-                                    return "Least Socially Mobile";
-                                }
-                                left_slide = false;
-                            }
+                        },
+                        stops: stops,
+                        histogramConfig: {
+                            bins: histogramResult.bins,
+                            dataLines: [{
+                                value: temp_array.quartile(0.25),
+                                label: titles[0]
+                            }, {
+                                value: temp_array.median(),
+                                label: titles[1]
+                            }, {
+                                value: median,
+                                label: titles[2]
+                            }, {
+                                value: temp_array.quartile(0.75),
+                                label: titles[3]
+                            }]
                         }
-                    }
-
-                    //Event handler for slider on colour slider move
-                    function changeEventHandler() {
-                        const renderer = data_map.renderer.clone();
-                        const colorVariable = renderer.visualVariables[0].clone();
-                        const outlineVariable = renderer.visualVariables[1];
-                        colorVariable.stops = slider.stops;
-                        renderer.visualVariables = [colorVariable, outlineVariable];
-                        data_map.renderer = renderer;
-                    }
-
-                    //Show histogram
-                    view.ui.add("dephisto", "bottom-left");
-                    $('#dephisto').show();
-
-                    slider.on(
-                        ["thumb-change", "thumb-drag", "min-change", "max-change"],
-                        changeEventHandler
-                    );
+                    });
                 })
                 .catch((error) => {
                     console.error("Error: ", error);
