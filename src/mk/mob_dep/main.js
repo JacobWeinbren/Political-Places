@@ -35,7 +35,7 @@ function selectChoices() {
         current_focus = 'dep';
         range = [0, 32844];
         median = 18422;
-        bins = 15;
+        bins = 12;
         theme = colorRamps.byName("Blue and Red 9");
         colors = theme.colors;
     }
@@ -44,7 +44,7 @@ function selectChoices() {
         current_focus = 'tundra';
         range = [0.2, 0.6];
         median = 0.421;
-        bins = 15;
+        bins = 10;
         theme = colorRamps.byName("Pink and Blue 1");
         colors = theme.colors;
         colors = colors.reverse();
@@ -271,7 +271,6 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
                         );
 
                         view.ui.add("dephisto", "bottom-left");
-                        $('#dephisto').show();
 
                         //Event handler for slider on colour slider move
                         function changeEventHandler() {
@@ -301,12 +300,14 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
 
                         slider.histogramConfig.average = null;
                         slider.histogramConfig.standardDeviation = null;
-                    } else {
-                        slider.updateFromRendererResult(rendererResult, histogramResult);
+
+                        $('#dephisto').show();
                     }
 
-                    //Adds in labels to the slider
+                    //Updates slider
                     var right_side = true;
+
+                    console.log(slider);
 
                     slider.set({
                         labelFormatFunction: (value, type) => {
@@ -334,6 +335,8 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
                             }
                         },
                         stops: stops,
+                        max: range[1],
+                        min: range[0],
                         histogramConfig: {
                             bins: histogramResult.bins,
                             dataLines: [{
