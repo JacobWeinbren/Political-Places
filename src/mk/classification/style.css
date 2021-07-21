@@ -6,3 +6,20 @@
 #dropdown {
     display: none;
 }
+
+#descriptions {
+    display: none;
+    width: 400px;
+    max-width: 70vw;
+    overflow-y: scroll;
+    max-height: 40vh;
+}
+
+.subtitle div {
+    padding-left: 0.25rem;
+    margin-bottom: .75rem;
+}
+
+#descriptions::-webkit-scrollbar {
+    -webkit-appearance: scrollbartrack-vertical;
+}

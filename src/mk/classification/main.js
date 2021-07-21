@@ -12,6 +12,13 @@ import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import GroupLayer from '@arcgis/core/layers/GroupLayer';
 import Query from "@arcgis/core/rest/support/Query";
 
+//Loads in extra components
+import { CalciteBlock, CalciteBlockSection, CalciteIcon } from '@esri/calcite-components/dist/custom-elements';
+
+customElements.define('calcite-block', CalciteBlock);
+customElements.define('calcite-block-section', CalciteBlockSection);
+customElements.define('calcite-icon', CalciteIcon);
+
 //Loads in descriptions
 import classification from '../../../output/eng/classification.json';
 const class_data = classification['data'];
@@ -58,7 +65,7 @@ var temp_class;
 var title;
 var code;
 
-//Iterate all the clases
+//Iterate all the classes to add metadata
 for (var i = 0; i < class_data.length; i++) {
     temp_class = class_data[i]
     title = temp_class.title;
@@ -94,6 +101,63 @@ for (var i = 0; i < class_data.length; i++) {
     }
 }
 
+//Creates descriptions
+MutationObserver = window.MutationObserver || window.WebKitMutationObserver;
+
+var observer = new MutationObserver(function(mutations, observer) {
+
+    console.log(mutations, $(document.querySelectorAll("calcite-block-section")));
+
+    $(document.querySelectorAll("calcite-block-section")).each(function(index) {
+        console.log($(this));
+        var id = $(this).attr('id');
+        var color = $(this).attr('color');
+        var title = $(this).attr('title');
+        var $elem = $(this)[0].shadowRoot.querySelector('.section-header__text');
+
+        console.log($elem);
+
+        $($(this)[0].shadowRoot.querySelector('.content')).css('padding: .5rem');
+
+        var $square = $('<calcite-icon icon="squareArea" scale="m"></calcite-icon>')
+            .css('color', color);
+
+        var $text = $('<b/>').html('&nbsp;&nbsp;' + title);
+
+        $($elem)
+            .append($square)
+            .append($text)
+            .css('display', 'flex')
+            .css('align-items', 'center');
+    });
+    observer.disconnect();
+});
+
+observer.observe($('#descriptions').get(0), {
+    childList: true,
+    subtree: true
+});
+
+$(document).ready(function() {
+    for (var i = 0; i < class_data.length; i++) {
+        temp_class = class_data[i];
+
+        if (temp_class.supergroup != "" && temp_class.group == "") {
+
+            current_col = colours[temp_class.supergroup - 1];
+
+            var $item = $('<calcite-block-section/>')
+                .attr('id', i)
+                .attr('color', current_col)
+                .attr('title', temp_class.title)
+                .text(temp_class.desc);
+
+            $("#descriptions").append($item);
+        }
+    }
+});
+
+//Generates values for renderer
 function createSymbol(colour) {
     return {
         type: "simple-fill",
@@ -105,7 +169,6 @@ function createSymbol(colour) {
     };
 }
 
-//Generates values for renderer
 var unique_values = []
 
 for (var i = 0; i < 8; i++) {
@@ -141,7 +204,6 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
     });
 
     const data_map = new FeatureLayer({
-        title: "Area Classification Categories",
         renderer: renderer,
         url: 'https://services5.arcgis.com/N6Nhpnxaedla81he/arcgis/rest/services/MK_Area_Classification/FeatureServer'
     });
@@ -175,6 +237,10 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
         //Add dropdown
         view.ui.add('dropdown', 'top-right');
         $('#dropdown').show();
+
+        //Add descriptions
+        view.ui.add('descriptions', 'top-right');
+        $('#descriptions').show();
 
         //Add chart
         view.ui.add("chart", "bottom-left");
@@ -287,6 +353,7 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
                 datasets: datasets
             };
 
+            //Chart render
             if (chart != null) {
                 chart.data.datasets = datasets;
                 chart.update();
@@ -299,10 +366,13 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
                         plugins: {
                             title: {
                                 display: true,
-                                text: 'Area Classification Categories'
+                                text: 'Area Classification Categories - ONS Supergroups'
                             },
                             legend: {
                                 labels: {
+                                    font: {
+                                        family: 'Avenir Next'
+                                    },
                                     generateLabels: function(chart) {
 
                                         var labelsOriginal = []

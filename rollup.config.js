@@ -27,9 +27,6 @@ function mk_plugins() {
         commonjs(),
         copy({
             targets: [{
-                src: path.resolve('output/eng/classification.json'),
-                dest: path.resolve('src/mk/classification')
-            }, {
                 src: path.resolve('node_modules/@esri/calcite-components/dist/calcite/assets'),
                 dest: path.resolve('dist/mk')
             }]
@@ -47,7 +44,7 @@ function mk_plugins() {
 
 //Sets current project
 var export_list = []
-var current_focus = 'src/mk/mob_dep/main.js'
+var current_focus = 'src/mk/classification/main.js'
 var current_template = deepcopy(mk_default);
 var current_inputs = mk_inputs;
 var result;

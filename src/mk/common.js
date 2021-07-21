@@ -1,8 +1,14 @@
 //Loads in Calcite
 import '@esri/calcite-components/dist/calcite/calcite.css';
-import { setAssetPath, CalciteButton, CalciteDropdown, CalciteDropdownGroup, CalciteDropdownItem, CalciteIcon } from '@esri/calcite-components/dist/custom-elements';
+import { setAssetPath, CalciteButton, CalciteDropdown, CalciteDropdownGroup, CalciteDropdownItem } from '@esri/calcite-components/dist/custom-elements';
 
-setAssetPath('dist/mk/assets');
+import parse from 'url-parse'
+
+const parsed = parse(
+    import.meta.url
+);
+
+setAssetPath(parsed.origin + '/dist/mk/');
 
 customElements.define('calcite-button', CalciteButton);
 customElements.define('calcite-dropdown', CalciteDropdown);
