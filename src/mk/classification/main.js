@@ -13,15 +13,23 @@ import GroupLayer from '@arcgis/core/layers/GroupLayer';
 import Query from "@arcgis/core/rest/support/Query";
 
 //Loads in extra components
-import { CalciteBlock, CalciteBlockSection, CalciteIcon } from '@esri/calcite-components/dist/custom-elements';
+import { CalciteBlock, CalciteBlockSection, CalciteAccordion, CalciteAccordionItem, CalciteIcon } from '@esri/calcite-components/dist/custom-elements';
 
 customElements.define('calcite-block', CalciteBlock);
 customElements.define('calcite-block-section', CalciteBlockSection);
+customElements.define('calcite-accordion', CalciteAccordion);
+customElements.define('calcite-accordion-item', CalciteAccordionItem);
 customElements.define('calcite-icon', CalciteIcon);
 
-function setText(elem) {
+//Supergroups title
+function superText(elem) {
     var colour = elem.getAttribute('colour');
     var title = elem.getAttribute('title');
+
+    if (elem.hasAttribute('percentage')) {
+        var percent = elem.getAttribute('percentage');
+        title += ' - ' + percent + '%';
+    }
 
     var $temp_title = $('<b/>')
         .text(title)
@@ -34,24 +42,53 @@ function setText(elem) {
 
     $($temp_title).prepend($temp_square);
     $(elem.shadowRoot).find('.section-header__text').html($temp_title);
-    $(elem.shadowRoot).find('.content').css('padding', '5px 5px 10px 5px');
 }
 
+function lowerText(elem) {
+    var title = elem.getAttribute('item-title');
+
+    if (elem.hasAttribute('percentage')) {
+        var percent = elem.getAttribute('percentage');
+        title += ' - ' + percent + '%';
+        $(elem.shadowRoot).find('.accordion-item-title').text(title);
+    }
+}
+
+//Defines custom elements to modify shadow DOM attrs
 class NewCalciteBlockSection extends CalciteBlockSection {
+    static get observedAttributes() {
+        return ['percentage'];
+    }
     constructor() {
         super();
     }
     attributeChangedCallback(name, oldValue, newValue) {
-        super.attributeChangedCallback(name, oldValue, newValue);
-        setText(this);
+        superText(this);
     }
     connectedCallback() {
         super.connectedCallback();
-        setText(this);
+        superText(this);
     }
 }
 
 customElements.define('new-calcite-block-section', NewCalciteBlockSection);
+
+class NewCalciteAccordionItem extends CalciteAccordionItem {
+    static get observedAttributes() {
+        return ['percentage'];
+    }
+    constructor() {
+        super();
+    }
+    attributeChangedCallback(name, oldValue, newValue) {
+        lowerText(this);
+    }
+    connectedCallback() {
+        super.connectedCallback();
+    }
+}
+
+customElements.define('new-calcite-accordion-item', NewCalciteAccordionItem);
 
 //Loads in descriptions
 import classification from '../../../output/eng/classification.json';
@@ -88,8 +125,7 @@ const colours = [
 ];
 
 //Sets object arrays
-var supergroups = [];
-var groups = [];
+var cats = [];
 
 //Iterate all the classes to add metadata
 for (var i = 0; i < class_data.length; i++) {
@@ -97,51 +133,88 @@ for (var i = 0; i < class_data.length; i++) {
     var title = temp_class.title;
     var code = temp_class.code;
 
-    //Add supergroups
+    //Add group type
     if (temp_class.supergroup != "" && temp_class.group == "") {
-        var temp_obj = {
-            title: title,
-            code: code.toString(),
-            count: 0,
-            percentage: 0,
-        }
-
-        var current_col = colours[temp_class.supergroup - 1];
-        temp_obj.colour = current_col;
-
-        supergroups.push(temp_obj);
+        var type = 'supergroup';
+    } else if (temp_class.supergroup != "" && temp_class.group != "" && temp_class.subgroup == "") {
+        var type = 'group';
+    } else if (temp_class.supergroup != "" && temp_class.group != "" && temp_class.subgroup != "") {
+        var type = 'subgroup';
     }
 
-    //Add groups
-    if (temp_class.supergroup != "" && temp_class.group != "" && temp_class.subgroup == "") {
-        var temp_obj = {
-            title: title,
-            code: code,
-            count: 0,
-            percentage: 0,
-        }
-
-        temp_obj.colour = current_col;
-
-        groups.push(temp_obj);
+    var temp_obj = {
+        title: title,
+        code: code,
+        type: type,
+        count: 0,
+        colour: colours[temp_class.supergroup - 1],
     }
+
+    cats.push(temp_obj);
 }
 
+//Adds descriptions
 $(document).ready(function() {
     for (var i = 0; i < class_data.length; i++) {
         temp_class = class_data[i];
 
         if (temp_class.supergroup != "" && temp_class.group == "") {
+            //Supergroups
+            var current_col = colours[temp_class.supergroup - 1];
 
-            current_col = colours[temp_class.supergroup - 1];
+            var $groups = $('<div>')
+                .addClass('desc-item')
+                .addClass(temp_class.code)
+                .append(
+                    $('<p/>')
+                    .text(temp_class.desc)
+
+                )
+                .append('<br>')
+                .append(
+                    $('<b/>')
+                    .text('Groups')
+                )
+                .append('<br>')
+                .append(
+                    $('<calcite-accordion/>')
+                    .addClass('groups')
+                )
+                .append('<br>')
+                .append(
+                    $('<b/>')
+                    .text('Subgroups')
+                )
+                .append(
+                    $('<calcite-accordion/>')
+                    .addClass('subgroups')
+                );
 
             var $item = $('<new-calcite-block-section/>')
-                .attr('id', i)
+                .attr('id', temp_class.code)
                 .attr('colour', current_col)
                 .attr('title', temp_class.title)
-                .text(temp_class.desc);
+                .html($groups);
 
             $("#descriptions").append($item);
+
+        } else if (temp_class.group != "" || temp_class.subgroup != "") {
+            //Groups and subgroups
+            if (temp_class.subgroup == "") {
+                var selector = '.' + temp_class.supergroup + ' .groups';
+            } else {
+                var selector = '.' + temp_class.supergroup + ' .subgroups';
+            }
+
+            $(selector).append(
+                $('<new-calcite-accordion-item/>')
+                .attr('item-title', temp_class.title)
+                .attr('id', temp_class.code)
+                .html(
+                    $('<p/>')
+                    .text(temp_class.desc)
+                )
+            )
         }
     }
 });
@@ -242,7 +315,6 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
         });
     });
 
-
     function generateRenderer(layerView) {
 
         //Filters map layer
@@ -265,26 +337,35 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
             var features = results.features;
 
             //Resets to 0
-            for (var i = 0; i < groups.length; i++) {
-                groups[i].count = 0;
-            }
-
-            for (var i = 0; i < supergroups.length; i++) {
-                supergroups[i].count = 0;
+            for (var i = 0; i < cats.length; i++) {
+                cats[i].count = 0;
             }
 
             for (var i = 0; i < features.length; i++) {
                 var temp_val = features[i]['attributes']['oac'];
 
-                for (var a = 0; a < supergroups.length; a++) {
-                    if (supergroups[a].code == temp_val.charAt(0)) {
-                        supergroups[a].count += 1
-                    }
-                }
+                for (var a = 0; a < cats.length; a++) {
 
-                for (var a = 0; a < groups.length; a++) {
-                    if (groups[a].code == temp_val.substring(0, 2)) {
-                        groups[a].count += 1
+                    var temp_item = cats[a];
+
+                    switch (temp_item.type) {
+                        case 'supergroup':
+                            if (temp_item.code == temp_val.substring(0, 1)) {
+                                cats[a].count += 1
+                            }
+                            break;
+
+                        case 'group':
+                            if (temp_item.code == temp_val.substring(0, 2)) {
+                                cats[a].count += 1
+                            }
+                            break;
+
+                        case 'subgroup':
+                            if (temp_item.code == temp_val.substring(0, 3)) {
+                                cats[a].count += 1
+                            }
+                            break;
                     }
                 }
             }
@@ -293,42 +374,62 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
             var labels = [];
             var datasets = [{
                     backgroundColor: [],
-                    data: []
+                    data: [],
+                    titles: []
                 },
                 {
                     backgroundColor: [],
-                    data: []
+                    data: [],
+                    titles: []
                 },
             ]
 
             //Gets counts
             var total_supergroups = 0;
-            for (var i = 0; i < supergroups.length; i++) {
-                total_supergroups += supergroups[i].count;
-            }
-
             var total_groups = 0;
-            for (var i = 0; i < groups.length; i++) {
-                total_groups += groups[i].count;
+            var total_subgroups = 0;
+
+            for (var i = 0; i < cats.length; i++) {
+                switch (cats[i].type) {
+                    case 'supergroup':
+                        total_supergroups += cats[i].count;
+                        break;
+                    case 'group':
+                        total_groups += cats[i].count
+                        break;
+                    case 'subgroup':
+                        total_subgroups += cats[i].count
+                        break;
+                }
             }
 
             //Gets percentages
-            for (var i = 0; i < supergroups.length; i++) {
-                var temp_item = supergroups[i];
+            for (var i = 0; i < cats.length; i++) {
+                var temp_item = cats[i];
+                var percentage;
 
-                var percentage = ((temp_item.count / total_supergroups) * 100).toFixed(2);
-                supergroups[i].percentage = percentage;
-                datasets[1].backgroundColor.push(temp_item.colour);
-                datasets[1].data.push(percentage);
-            }
+                switch (temp_item.type) {
+                    case 'supergroup':
+                        percentage = ((temp_item.count / total_supergroups) * 100).toFixed(2);
+                        datasets[1].backgroundColor.push(temp_item.colour);
+                        datasets[1].data.push(percentage);
+                        datasets[1].titles.push(temp_item.title + ': ' + Math.round(percentage) + '%');
+                        $('#' + temp_item.code).attr('percentage', Math.round(percentage));
+                        break;
 
-            for (var i = 0; i < groups.length; i++) {
-                temp_item = groups[i];
+                    case 'group':
+                        percentage = ((temp_item.count / total_groups) * 100).toFixed(2);
+                        datasets[0].backgroundColor.push(temp_item.colour);
+                        datasets[0].data.push(percentage);
+                        datasets[0].titles.push(temp_item.title + ': ' + Math.round(percentage) + '%');
+                        $('#' + temp_item.code).attr('percentage', Math.round(percentage));
+                        break;
 
-                percentage = ((temp_item.count / total_groups) * 100).toFixed(2);
-                groups[i].percentage = percentage;
-                datasets[0].backgroundColor.push(temp_item.colour);
-                datasets[0].data.push(percentage);
+                    case 'subgroup':
+                        percentage = ((temp_item.count / total_subgroups) * 100).toFixed(2);
+                        $('#' + temp_item.code).attr('percentage', Math.round(percentage));
+                        break;
+                }
             }
 
             const data = {
@@ -349,7 +450,10 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
                         plugins: {
                             title: {
                                 display: true,
-                                text: 'Area Classification Categories - ONS Supergroups'
+                                text: 'Area Classification Categories - ONS Supergroups',
+                                font: {
+                                    family: 'Avenir Next'
+                                },
                             },
                             legend: {
                                 labels: {
@@ -360,20 +464,21 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
 
                                         var labelsOriginal = []
 
-                                        for (i = 0; i < supergroups.length; i++) {
-                                            var temp_item = supergroups[i];
+                                        for (i = 0; i < cats.length; i++) {
+                                            var temp_item = cats[i];
 
-                                            labelsOriginal.push({
-                                                "text": temp_item.title,
-                                                "fillStyle": temp_item.colour,
-                                                "strokeStyle": "#fff",
-                                                "lineWidth": 1,
-                                                "hidden": false,
-                                                "index": i,
-                                                "datasetIndex": i
-                                            })
+                                            if (temp_item.type == 'supergroup') {
+                                                labelsOriginal.push({
+                                                    "text": temp_item.title,
+                                                    "fillStyle": temp_item.colour,
+                                                    "strokeStyle": "#fff",
+                                                    "lineWidth": 1,
+                                                    "hidden": false,
+                                                    "index": i,
+                                                    "datasetIndex": i
+                                                });
+                                            }
                                         }
-
                                         return labelsOriginal;
                                     }
                                 }
@@ -381,22 +486,7 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
                             tooltip: {
                                 callbacks: {
                                     label: function(context) {
-                                        const temp_dataset = context.datasetIndex;
-                                        const temp_data = context.dataIndex;
-
-                                        var a, b;
-
-                                        if (temp_dataset == 1) {
-                                            a = supergroups[temp_data].title
-                                            b = ': ' + Math.round(supergroups[temp_data].percentage) + '%';
-                                        }
-
-                                        if (temp_dataset == 0) {
-                                            a = groups[temp_data].title;
-                                            b = ': ' + Math.round(groups[temp_data].percentage) + '%';
-                                        }
-
-                                        return ' ' + a + b;
+                                        return ' ' + context.dataset.titles[context.dataIndex];
                                     }
                                 }
                             }

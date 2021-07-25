@@ -9,10 +9,17 @@
 
 #descriptions {
     display: none;
-    width: 400px;
+    width: 500px;
     max-width: 70vw;
     overflow-y: scroll;
-    max-height: 40vh;
+    max-height: 80vh;
+}
+
+@media only screen and (max-width: 1000px) {
+    #descriptions {
+        width: 400px;
+        max-height: 40vh;
+    }
 }
 
 .subtitle div {
@@ -22,4 +29,19 @@
 
 #descriptions::-webkit-scrollbar {
     -webkit-appearance: scrollbartrack-vertical;
+}
+
+.desc-item,
+new-calcite-accordion-item p {
+    font-size: 13px;
+}
+
+new-calcite-accordion-item p {
+    margin: 0;
+}
+
+.desc-item>p,
+b,
+calcite-accordion {
+    margin: 5px;
 }
