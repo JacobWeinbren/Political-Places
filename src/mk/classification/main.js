@@ -455,6 +455,11 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
                                     family: 'Avenir Next'
                                 },
                             },
+                            tooltip: {
+                                bodyFont: {
+                                    family: 'Avenir Next'
+                                }
+                            },
                             legend: {
                                 labels: {
                                     font: {
