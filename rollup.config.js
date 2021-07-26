@@ -11,7 +11,7 @@ const production = !process.env.ROLLUP_WATCH;
 //const production = true;
 
 //MK Template and inputs
-var mk_inputs = ['src/mk/mob_dep/main.js', 'src/mk/classification/main.js']
+var mk_inputs = ['src/mk/mob_dep/main.js', 'src/mk/classification/main.js', 'src/mk/population/main.js', ]
 var mk_default = {
     output: [{
         format: 'es',
@@ -44,7 +44,7 @@ function mk_plugins() {
 
 //Sets current project
 var export_list = []
-var current_focus = 'src/mk/classification/main.js'
+var current_focus = 'src/mk/population/main.js'
 var current_template = deepcopy(mk_default);
 var current_inputs = mk_inputs;
 var result;

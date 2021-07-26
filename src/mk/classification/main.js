@@ -267,7 +267,7 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
 
     const data_map = new FeatureLayer({
         renderer: renderer,
-        url: 'https://services5.arcgis.com/N6Nhpnxaedla81he/arcgis/rest/services/MK_Area_Classification/FeatureServer'
+        url: 'https://services5.arcgis.com/N6Nhpnxaedla81he/arcgis/rest/services/MK_Classification/FeatureServer'
     });
 
     //Groups and overlaps layers

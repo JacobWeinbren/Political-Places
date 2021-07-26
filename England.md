@@ -19,7 +19,7 @@ Guides for all other nations coming, when we do articles on them.
 
 5. ```Overlay (Union)``` the constituencies (this makes smaller features that represent where they overlap). The order is important 
 
-6. Intersect buildings with combined constituencies, keeping ```new_con``` and ```old_con```.
+6. Intersect buildings with combined constituencies, culling all attributes.
 
 7. Intersect ```deprivation``` and ```mobility``` with combined constituencies. keep ```old_con```, ```new_con``` + ```dep```/```mob``` attrs and remove the remainder. This works because they are both LSOA data.
 
@@ -32,11 +32,13 @@ Guides for all other nations coming, when we do articles on them.
 ![Map of MK Constituencies on ArcGIS](result.png?raw=true "Map of MK Constituencies on ArcGIS")
 
 
-## Generate the classification map
+## Generate the classification (or % population change) map
 
-1. Run ```JSON to Features``` for OAC (Output Area Classification) ```.geojson``` files.
+1. Run ```JSON to Features``` for OAC (Output Area Classification) or population ```.geojson``` files.
 
-2. Run intersect with buildings and OAC layer.
+2. Run intersect with MK Combined and OAC/Pop layer.
+
+2. a. (Optional) - Generate the MK Buildings layer, through intersecting combined constituencies with buildings.
 
 3. Manually cull attributes, keeping only the classification code.
 
