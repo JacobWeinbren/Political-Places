@@ -2,13 +2,13 @@
     display: none;
 }
 
-#dephisto {
+#histo {
     display: none;
     text-align: center;
     padding-top: 9px;
 }
 
-#dephisto #title {
+#histo #title {
     margin: 0 auto;
     font-weight: bold;
 }

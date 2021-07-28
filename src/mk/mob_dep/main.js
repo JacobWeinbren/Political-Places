@@ -27,7 +27,7 @@ var median;
 var theme;
 var bins;
 var colors;
-var slider = null;
+var slider;
 
 function selectChoices() {
     if (choice == "Deprivation") {
@@ -262,7 +262,7 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
                             histogramResult
                         );
 
-                        view.ui.add("dephisto", "bottom-left");
+                        view.ui.add("histo", "bottom-left");
 
                         //Event handler for slider on colour slider move
                         function changeEventHandler() {
@@ -293,7 +293,7 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
                         slider.histogramConfig.average = null;
                         slider.histogramConfig.standardDeviation = null;
 
-                        $('#dephisto').show();
+                        $('#histo').show();
                     }
 
                     //Updates slider

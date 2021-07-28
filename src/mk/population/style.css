@@ -1,0 +1,16 @@
+#dropdown {
+    display: none;
+}
+
+#legend {
+    display: none;
+    text-align: center;
+}
+
+.esri-legend__layer-table--size-ramp div {
+    justify-content: center;
+}
+
+.esri-legend__layer {
+    margin-left: none;
+}
