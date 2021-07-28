@@ -81,7 +81,7 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
         //Builds the colour slider
         const params = {
             layer: data_map,
-            valueExpression: "$feature.pop",
+            field: "pop",
             theme: "above-and-below",
             symbolOptions: {
                 symbolStyle: "circle-arrow"
