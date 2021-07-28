@@ -437,9 +437,12 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
                 datasets: datasets
             };
 
+            var text = ['Area Classification Categories - ONS Supergroups', 'Line Chart', '', $($('#dropdown').prop('selectedItems')[0]).text()]
+
             //Chart render
             if (chart != null) {
                 chart.data.datasets = datasets;
+                chart.options.plugins.title.text = text;
                 chart.update();
             } else {
                 chart = new Chart($('#chart'), {
@@ -450,7 +453,7 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
                         plugins: {
                             title: {
                                 display: true,
-                                text: 'Area Classification Categories - ONS Supergroups',
+                                text: text,
                                 font: {
                                     family: 'Avenir Next'
                                 },
