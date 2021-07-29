@@ -44,7 +44,7 @@ function mk_plugins() {
 
 //Sets current project
 var export_list = []
-var current_focus = 'src/mk/population/main.js'
+var current_focus = 'src/mk/classification/main.js'
 var current_template = deepcopy(mk_default);
 var current_inputs = mk_inputs;
 var result;

@@ -4,13 +4,9 @@
 
 #legend {
     display: none;
+}
+
+.esri-legend__service-label,
+.esri-legend__layer-caption {
     text-align: center;
-}
-
-.esri-legend__layer-table--size-ramp div {
-    justify-content: center;
-}
-
-.esri-legend__layer {
-    margin-left: none;
 }

@@ -99,12 +99,13 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
 
     //Loads in layers
     const buildings = new FeatureLayer({
-        url: "https://services5.arcgis.com/N6Nhpnxaedla81he/arcgis/rest/services/MK_Buildings/FeatureServer/"
+        url: "https://services5.arcgis.com/N6Nhpnxaedla81he/arcgis/rest/services/MK_Buildings/FeatureServer"
     });
 
     const data_map = new FeatureLayer({
         renderer: defaultRenderer,
-        url: 'https://services5.arcgis.com/N6Nhpnxaedla81he/arcgis/rest/services/MK_Data/FeatureServer/'
+        maxScale: 0,
+        url: 'https://services5.arcgis.com/N6Nhpnxaedla81he/arcgis/rest/services/MK_Data/FeatureServer'
     });
 
     //Groups and overlaps layers
@@ -122,15 +123,16 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
     var view = new MapView({
         map: map,
         zoom: 11,
+        constraints: {
+            minZoom: 10,
+        },
         center: [-0.75, 52.04],
         container: 'map',
     });
 
-    view.constraints.minZoom = 10;
-    view.constraints.maxZoom = 18;
-
     //Filters
     view.whenLayerView(data_map).then((layerView) => {
+        $('.esri-attribution__sources')[0].append(' | Ordnance Survey, Gov.UK, Office for Students')
         generateRenderer(layerView);
 
         //Add dropdown
@@ -256,7 +258,7 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
                 .then((histogramResult) => {
 
                     //Establishes slider
-                    if (slider == null) {
+                    if (!slider) {
                         slider = ColorSlider.fromRendererResult(
                             rendererResult,
                             histogramResult
@@ -267,10 +269,9 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
                         //Event handler for slider on colour slider move
                         function changeEventHandler() {
                             const renderer = data_map.renderer.clone();
-                            const colorVariable = renderer.visualVariables[0].clone();
-                            const outlineVariable = renderer.visualVariables[1];
+                            var colorVariable = renderer.visualVariables[0].clone();
                             colorVariable.stops = slider.stops;
-                            renderer.visualVariables = [colorVariable, outlineVariable];
+                            renderer.visualVariables = [colorVariable];
                             data_map.renderer = renderer;
                         }
 
@@ -298,8 +299,6 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
 
                     //Updates slider
                     var right_side = true;
-
-                    console.log(slider);
 
                     slider.set({
                         labelFormatFunction: (value, type) => {

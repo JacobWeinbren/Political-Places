@@ -267,6 +267,7 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
 
     const data_map = new FeatureLayer({
         renderer: renderer,
+        maxScale: 0,
         url: 'https://services5.arcgis.com/N6Nhpnxaedla81he/arcgis/rest/services/MK_Classification/FeatureServer'
     });
 
@@ -286,14 +287,15 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
         map: map,
         zoom: 11,
         center: [-0.75, 52.04],
-        container: 'map'
+        container: 'map',
+        constraints: {
+            minZoom: 10,
+        },
     });
-
-    view.constraints.minZoom = 10;
-    view.constraints.maxZoom = 18;
 
     //Show chart
     view.whenLayerView(data_map).then((layerView) => {
+        $('.esri-attribution__sources')[0].append(' | Ordnance Survey, ONS')
         generateRenderer(layerView);
 
         //Add dropdown
