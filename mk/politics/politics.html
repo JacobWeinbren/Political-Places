@@ -1,0 +1,29 @@
+<head lang='en'>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width'>
+    <link rel="stylesheet" href="https://js.arcgis.com/4.20/esri/themes/light/main.css" />
+    <link rel="stylesheet" href="main.css" />
+    <title>MK - 4</title>
+</head>
+
+<body>
+    <main>
+        <div class="shell-container">
+            <calcite-shell>
+                <div id="map"></div>
+                <calcite-dropdown id="dropdown" label="Select Data Focus">
+                    <calcite-button slot="dropdown-trigger">Select Data Focus</calcite-button>
+                    <calcite-dropdown-group selection-mode="single" group-title="Data Type">
+                        <calcite-dropdown-item choice="Results" active>Results</calcite-dropdown-item>
+                        <calcite-dropdown-item choice="Swing">Swing</calcite-dropdown-item>
+                    </calcite-dropdown-group>
+                </calcite-dropdown>
+                <div id="legend" class="esri-widget">
+                </div>
+            </calcite-shell>
+        </div>
+    </main>
+    <script type="module" src='main.js'></script>
+</body>
+
+</html>
