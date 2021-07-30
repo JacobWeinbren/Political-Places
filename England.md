@@ -32,14 +32,14 @@ Guides for all other nations coming, when we do articles on them.
 ![Map of MK Constituencies on ArcGIS](result.png?raw=true "Map of MK Constituencies on ArcGIS")
 
 
-## Generate the classification (or % population change) map
+## Generate the classification/population/politics map
 
-1. Run ```JSON to Features``` for OAC (Output Area Classification) or population ```.geojson``` files.
+1. Run ```JSON to Features``` for classification/population/politics ```.geojson``` files.
 
-2. Run intersect with MK Combined and OAC/Pop layer.
+2. Run intersect with MK Combined and lassification/population/politics layer.
 
 2. a. (Optional) - Generate the MK Buildings layer, through intersecting combined constituencies with buildings.
 
-3. Manually cull attributes, keeping only the classification code.
+3. Manually cull attributes, keeping only required data attributes.
 
 4. Upload Area Classifications layer. Remember to select WSG84 Projection.

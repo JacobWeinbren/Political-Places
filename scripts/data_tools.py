@@ -65,7 +65,7 @@ def createCsv(file):
 """
 Reads JSON
 """
-def readJSON(file):
+def readJSON(injson):
 	print("Reading", injson)
 	with open(injson) as f:
 		data = ujson.load(f)

@@ -2,6 +2,7 @@ import os, ujson, pandas, geopandas
 from get_root import inputdir, outputdir
 from data_tools import addData, createCsv, readSheet
 from oac_reader import writeClassification
+from politics import eng_politics
 from download import createFolder
 from pop import pop
 
@@ -86,6 +87,13 @@ if not os.path.exists(outputdir + 'eng/wards.geojson'):
 
 	#Output to file
 	gdf.to_file(outputdir + 'eng/wards.geojson', driver='GeoJSON')
+
+if not os.path.exists(outputdir + 'eng/politics.geojson'):
+	eng_politics (
+		injson = outputdir + 'eng/wards.geojson',
+		file = inputdir + 'pol_eng/England Local Elections 2021.csv', 
+		outjson = outputdir + 'eng/politics.geojson'
+	)
 
 """
 Writes England Wide Data
