@@ -1,5 +1,5 @@
 //Loads in Calcite, JQuery, common styles
-import '../common.js'
+import * as common from '../common.js'
 
 //Loads in styles
 import './style.css';
@@ -140,10 +140,7 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
 
     //Filters
     view.whenLayerView(data_map).then((layerView) => {
-        $('.esri-attribution__sources')[0].append(' | Ordnance Survey, Britain Elects');
-        $('.esri-attribution__sources').on('data-attribute-changed', function() {
-            $('.esri-attribution__sources')[0].append(' | Ordnance Survey, Britain Elects');
-        });
+        common.attribution($('.esri-attribution__sources')[0], ' | Ordnance Survey, Britain Elects');
 
         //Add dropdown
         view.ui.add('dropdown', 'top-right');
