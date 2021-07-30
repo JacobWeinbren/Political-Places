@@ -10,6 +10,8 @@ Navigating the UK constituencies can be tricky, but in every place is a fascinat
 
 - Colour ramps from [Goedhart](https://thenode.biologists.com/data-visualization-with-flying-colors/research/) and [ArcGIS Colour Ramps](https://developers.arcgis.com/javascript/latest/visualization/symbols-color-ramps/esri-color-ramps/)
 
+- Arrow from ekenes, you can see their swing map [here](https://github.com/ekenes/election-party-swing)
+
 ## Get Repo 
 1. Clone directory through ```git clone https://github.com/JacobWeinbren/Political-Places```
 

@@ -1,0 +1,12 @@
+#dropdown {
+    display: none;
+}
+
+#legend {
+    display: none;
+}
+
+.esri-legend__service-label,
+.esri-legend__layer-caption {
+    text-align: center;
+}

@@ -20,7 +20,7 @@ import Query from "@arcgis/core/rest/support/Query";
 import * as colorRamps from "@arcgis/core/smartMapping/symbology/support/colorRamps";
 
 var current_constituency = 'Combined'
-var choice = 'Deprivation'
+var current_choice = 'Deprivation'
 var current_focus;
 var range;
 var median;
@@ -30,7 +30,7 @@ var colors;
 var slider;
 
 function selectChoices() {
-    if (choice == "Deprivation") {
+    if (current_choice == "Deprivation") {
         current_focus = 'dep';
         range = [0, 32844];
         median = 18422;
@@ -38,7 +38,7 @@ function selectChoices() {
         theme = colorRamps.byName("Blue and Red 9");
         colors = theme.colors;
     }
-    if (choice == "Social Mobility") {
+    if (current_choice == "Social Mobility") {
         current_focus = 'tundra';
         range = [0.2, 0.6];
         median = 0.421;
@@ -133,6 +133,10 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
     //Filters
     view.whenLayerView(data_map).then((layerView) => {
         $('.esri-attribution__sources')[0].append(' | Ordnance Survey, Gov.UK, Office for Students')
+        $('.esri-attribution__sources').on('data-attribute-changed', function() {
+            $('.esri-attribution__sources')[0].append(' | Ordnance Survey, Gov.UK, Office for Students')
+        });
+
         generateRenderer(layerView);
 
         //Add dropdown
@@ -145,7 +149,7 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
             if (props != $('#dropdown').prop('selectedItems')) {
                 props = $('#dropdown').prop('selectedItems');
                 current_constituency = $(props[0]).attr('choice')
-                choice = $(props[1]).attr('choice');
+                current_choice = $(props[1]).attr('choice');
                 generateRenderer(layerView);
             }
         });
@@ -350,10 +354,10 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
                         }
                     });
 
-                    if (choice == "Social Mobility") {
+                    if (current_choice == "Social Mobility") {
                         $('#title').html("Higher Education Participation (TUNDRA)<br>" + $($('#dropdown').prop('selectedItems')[0]).text());
                     }
-                    if (choice == "Deprivation") {
+                    if (current_choice == "Deprivation") {
                         $('#title').html("Deprivation Ranking<br>" + $($('#dropdown').prop('selectedItems')[0]).text());
                     }
                 })

@@ -296,6 +296,10 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
     //Show chart
     view.whenLayerView(data_map).then((layerView) => {
         $('.esri-attribution__sources')[0].append(' | Ordnance Survey, ONS')
+        $('.esri-attribution__sources').on('data-attribute-changed', function() {
+            $('.esri-attribution__sources')[0].append(' | Ordnance Survey, ONS')
+        });
+
         generateRenderer(layerView);
 
         //Add dropdown
