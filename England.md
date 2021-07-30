@@ -36,7 +36,9 @@ Guides for all other nations coming, when we do articles on them.
 
 1. Run ```JSON to Features``` for classification/population/politics ```.geojson``` files.
 
-2. Run intersect with MK Combined and lassification/population/politics layer.
+2. a. For politics, run clip with MK Combined
+
+2. b. For classification/population, run intersect with MK Combined
 
 2. a. (Optional) - Generate the MK Buildings layer, through intersecting combined constituencies with buildings.
 

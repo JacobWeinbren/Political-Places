@@ -44,10 +44,21 @@ def eng_politics(injson, file, outjson):
 	#Add data to features
 	for index, feature in enumerate(features['features']):
 		props = feature['properties']
+
+		#Get name of ward
 		feature_name = props['NAME'].rsplit(' ', 1)[0].lower().replace(' & ', '').replace(' and ', '')
 		feature_name = regex.sub('', feature_name)
 
+		#Defaults
+		features_copy['features'][index]['properties'] = {
+			'winner': None,
+			'majority': None,
+			'swing': None,
+			'swing_party': None,
+		}
+
 		for item in data:
+			#Get name of ward in data
 			ward_name = item['meta-Ward / Division'].lower().replace(' & ', '').replace(' and ', '')
 			ward_name = regex.sub('', ward_name) 
 
