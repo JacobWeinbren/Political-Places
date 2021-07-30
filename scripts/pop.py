@@ -9,8 +9,20 @@ Aggregates population data
 """
 def pop():
 	print("Collecting pop data")
-	old = readSheet(inputdir + 'pop_old/2007-2010.xlsx', 'Sheet1', 0, 3) 
-	new = readSheet(inputdir + 'pop_new/SAPE22DT2-mid-2019-lsoa-syoa-estimates-unformatted.xlsx', 'Mid-2019 Persons', 0, 6, skipextra=4) 
+	old = readSheet(
+		workbook = inputdir + 'pop_old/2007-2010.xlsx', 
+		worksheet = 'Sheet1', 
+		id_col = 0, 
+		data_col = 3
+	) 
+	#Skips header
+	new = readSheet(
+		workbook = inputdir + 'pop_new/SAPE22DT2-mid-2019-lsoa-syoa-estimates-unformatted.xlsx', 
+		worksheet = 'Mid-2019 Persons', 
+		id_col = 0, 
+		skip_header = 4,
+		data_col = 6
+	) 
 
 	with open(outputdir + 'eng/pop.csv', 'w') as file:
 		writer = csv.writer(file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)

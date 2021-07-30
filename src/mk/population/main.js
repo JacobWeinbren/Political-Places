@@ -174,10 +174,14 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
             $('#legend').show();
         }
 
-        //Dropdown fcontrol
+        //Dropdown control
+        var props;
         $('#dropdown').on('calciteDropdownSelect', function() {
-            current_constituency = $($('#dropdown').prop('selectedItems')[0]).attr('choice')
-            generateRenderer(layerView);
+            if (props != $('#dropdown').prop('selectedItems')) {
+                props = $('#dropdown').prop('selectedItems');
+                current_constituency = $(props[0]).attr('choice')
+                generateRenderer(layerView);
+            }
         });
     });
 

@@ -35,6 +35,13 @@ def retrieve(url, fname):
             bar.update(size)
 
 """
+Creates Folder
+"""
+def createFolder(directory):
+	if not os.path.exists(directory):
+			os.makedirs(directory)
+
+"""
 Download file function
 """
 def download(directory, url, name, ext="zip"):
@@ -43,8 +50,7 @@ def download(directory, url, name, ext="zip"):
 	loc = directory + "/" + name
 	loc = loc + "." + ext
 
-	if not os.path.exists(directory):
-		os.makedirs(directory)
+	createFolder(directory)
 
 	if len(os.listdir(directory)) == 0:
 		print("Downloading", name)
@@ -92,19 +98,45 @@ download(
 	"Northern Ireland Super Output Boundaries"
 )
 
-#GB Constituencies 2019
+#GB Constituencies + Wards 2019
 download(
 	"con_gb", 
 	"https://api.os.uk/downloads/v1/products/BoundaryLine/downloads?area=GB&format=ESRI%C2%AE+Shapefile&redirect", 
 	"GB Constituencies 2019"
 )
 if os.path.exists(inputdir + 'con_gb/Data'):
+	#Constituencies
 	copyfile(inputdir + "con_gb/Data/GB/westminster_const_region.dbf", inputdir + "con_gb/westminster_const_region.dbf")
 	copyfile(inputdir + "con_gb/Data/GB/westminster_const_region.prj", inputdir + "con_gb/westminster_const_region.prj")
 	copyfile(inputdir + "con_gb/Data/GB/westminster_const_region.shp", inputdir + "con_gb/westminster_const_region.shp")
 	copyfile(inputdir + "con_gb/Data/GB/westminster_const_region.shx", inputdir + "con_gb/westminster_const_region.shx")
+
+	#Creates ward folder, outside download function
+	createFolder(inputdir + "ward_gb")
+
+	#Unitary Wards 
+	copyfile(inputdir + "con_gb/Data/GB/unitary_electoral_division_region.dbf", inputdir + "ward_gb/unitary_electoral_division_region.dbf")
+	copyfile(inputdir + "con_gb/Data/GB/unitary_electoral_division_region.prj", inputdir + "ward_gb/unitary_electoral_division_region.prj")
+	copyfile(inputdir + "con_gb/Data/GB/unitary_electoral_division_region.shp", inputdir + "ward_gb/unitary_electoral_division_region.shp")
+	copyfile(inputdir + "con_gb/Data/GB/unitary_electoral_division_region.shx", inputdir + "ward_gb/unitary_electoral_division_region.shx")
+
+	#Includes most other wards
+	copyfile(inputdir + "con_gb/Data/GB/district_borough_unitary_ward_region.dbf", inputdir + "ward_gb/district_borough_unitary_ward_region.dbf")
+	copyfile(inputdir + "con_gb/Data/GB/district_borough_unitary_ward_region.prj", inputdir + "ward_gb/district_borough_unitary_ward_region.prj")
+	copyfile(inputdir + "con_gb/Data/GB/district_borough_unitary_ward_region.shp", inputdir + "ward_gb/district_borough_unitary_ward_region.shp")
+	copyfile(inputdir + "con_gb/Data/GB/district_borough_unitary_ward_region.shx", inputdir + "ward_gb/district_borough_unitary_ward_region.shx")
+
+	#Clears
 	shutil.rmtree(inputdir + "con_gb/Data")
 	shutil.rmtree(inputdir + "con_gb/Doc")
+
+#Politics
+download(
+	"pol_eng", 
+	"https://docs.google.com/spreadsheets/d/1eS_d4ZWRNJ7MGgUYoq6ST4WxCFwEygiS_17Bm4amPy0/export?gid=709317733&format=csv", 
+	"England Local Elections 2021",
+	"csv"
+)
 
 #England Constituencies New
 download(
