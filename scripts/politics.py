@@ -22,13 +22,13 @@ def eng_politics(injson, file, outjson):
 			if 0 <= index <= 5:
 				header_copy[index] = 'meta-' + head
 			if 6 <= index <= 17:
-				header_copy[index] = 'old-v-' + head
-			if 18 <= index <= 29:
 				header_copy[index] = 'new-v-' + head
+			if 18 <= index <= 29:
+				header_copy[index] = 'old-v-' + head
 			if 30 <= index <= 41:
-				header_copy[index] = 'old-p-' + head
-			if 42 <= index <= 53:
 				header_copy[index] = 'new-p-' + head
+			if 42 <= index <= 53:
+				header_copy[index] = 'old-p-' + head
 
 		data = []
 
@@ -44,10 +44,12 @@ def eng_politics(injson, file, outjson):
 	#Add data to features
 	for index, feature in enumerate(features['features']):
 		props = feature['properties']
-		feature_name = regex.sub('', props['NAME'].rsplit(' ', 1)[0].lower())
+		feature_name = props['NAME'].rsplit(' ', 1)[0].lower().replace(' & ', '').replace(' and ', '')
+		feature_name = regex.sub('', feature_name)
 
 		for item in data:
-			ward_name = regex.sub('', item['meta-Ward / Division'].lower()) 
+			ward_name = item['meta-Ward / Division'].lower().replace(' & ', '').replace(' and ', '')
+			ward_name = regex.sub('', ward_name) 
 
 			#In the array
 			if ward_name == feature_name:
@@ -56,21 +58,22 @@ def eng_politics(injson, file, outjson):
 				changes = {}
 
 				for party in parties:
-					results[party] = float(item['new-p-' + party].replace('', '0'))
-					changes[party] = float(item['new-p-' + party].replace('', '0')) - float(item['new-p-' + party].replace('', '0'))
+					results[party] = float(item['new-p-' + party].strip() or 0)
+					changes[party] = float(item['new-p-' + party].strip() or 0) - float(item['old-p-' + party].strip() or 0)
 
 				sorted_results = sorted(results, key=results.get, reverse=True)
 				
 				first_party = sorted_results[0]
 				second_party = sorted_results[1]
 				majority = results[first_party] - results[second_party]
-				swing = (changes[first_party] - changes[second_party]) / 2
+				swing = abs((changes[first_party] - changes[second_party]) / 2)
 
 				if changes[second_party] >= changes[first_party]: 
 					swing_party = second_party
 				else:
 					swing_party = first_party
 
+				features_copy['features'][index]['properties'] = {}
 				features_copy['features'][index]['properties']['winner'] = first_party
 				features_copy['features'][index]['properties']['majority'] = round(majority, 1)
 				features_copy['features'][index]['properties']['swing'] = round(swing, 1)
