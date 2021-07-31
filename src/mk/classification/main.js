@@ -4,6 +4,8 @@ import * as common from '../common.js'
 //Loads in styles
 import './style.css';
 
+import { bulletPoint16, chevronDown16, squareArea16 } from "@esri/calcite-ui-icons";
+
 //Loads in Esri
 import esriConfig from '@arcgis/core/config';
 import Map from '@arcgis/core/Map';

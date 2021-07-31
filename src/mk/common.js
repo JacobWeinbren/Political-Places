@@ -4,12 +4,6 @@ import { setAssetPath, CalciteButton, CalciteDropdown, CalciteDropdownGroup, Cal
 
 import parse from 'url-parse'
 
-const parsed = parse(
-    import.meta.url
-);
-
-setAssetPath(parsed.origin + '/dist/mk/');
-
 customElements.define('calcite-button', CalciteButton);
 customElements.define('calcite-dropdown', CalciteDropdown);
 customElements.define('calcite-dropdown-group', CalciteDropdownGroup);
