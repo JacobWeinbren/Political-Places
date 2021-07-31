@@ -25,6 +25,11 @@ var mk_default = {
 function mk_plugins() {
     return [
         commonjs(),
+        replace({
+            values: {
+                'process.env.ASSET': production ? '/mk/' : '/mk/dist/'
+            }
+        }),
         copy({
             targets: [{
                 src: path.resolve('node_modules/@esri/calcite-components/dist/calcite/assets'),

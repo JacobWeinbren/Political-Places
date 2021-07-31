@@ -4,10 +4,6 @@ import '../common.js'
 //Loads in styles
 import './style.css';
 
-import { listBullet16 } from "../assets/calcite-icon/listBullet16.json";
-import { chevronDown16 } from "../assets/calcite-icon/chevronDown16.json";
-import { squareArea16 } from "../assets/calcite-icon/squareArea16.json";
-
 //Loads in Esri
 import esriConfig from '@arcgis/core/config';
 import Map from '@arcgis/core/Map';
