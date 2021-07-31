@@ -73,7 +73,7 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
 
     //Establishes view
     const map = new Map({
-        basemap: 'arcgis-dark-gray',
+        basemap: 'arcgis-light-gray',
         layers: [data_map]
     });
 
