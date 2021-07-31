@@ -9,6 +9,7 @@
     "@rollup/plugin-commonjs": "latest",
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "latest",
+    "@rollup/plugin-replace": "^3.0.0",
     "@stencil/core": "latest",
     "jquery": "^3.6.0",
     "npm-run-all": "latest",

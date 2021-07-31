@@ -6,6 +6,7 @@ import postcss from 'rollup-plugin-postcss';
 import deepcopy from 'deepcopy';
 import path from 'path';
 import json from '@rollup/plugin-json';
+import replace from '@rollup/plugin-replace';
 
 const production = !process.env.ROLLUP_WATCH;
 //const production = true;
@@ -55,7 +56,7 @@ function mk_plugins() {
 
 //Sets current project
 var export_list = []
-var current_focus = 'src/mk/classification/main.js'
+var current_focus = 'src/mk/politics/main.js'
 var current_template = deepcopy(mk_default);
 var current_inputs = mk_inputs;
 var result;
