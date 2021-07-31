@@ -27,7 +27,7 @@ function mk_plugins() {
         commonjs(),
         replace({
             preventAssignment: true,
-            __assetLocation__: production ? '/mk/' : '/mk/dist/'
+            'process.env.DEBUG': JSON.stringify(production)
         }),
         copy({
             targets: [{
