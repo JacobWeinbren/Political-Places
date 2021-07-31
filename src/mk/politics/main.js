@@ -15,6 +15,7 @@ import FeatureLayer from "@arcgis/core/layers/FeatureLayer";
 import GroupLayer from '@arcgis/core/layers/GroupLayer'
 import Legend from "@arcgis/core/widgets/Legend";
 import Color from "@arcgis/core/Color";
+import * as watchUtils from "@arcgis/core/core/watchUtils";
 
 var current_focus = 'Results';
 var legend;
@@ -169,7 +170,7 @@ const swing_renderer = {
         valueExpression: 'return $feature.swing;',
         valueExpressionTitle: "Swing in Percentage Points",
         minDataValue: 0,
-        maxDataValue: 40,
+        maxDataValue: 20,
         maxSize: {
             type: "size",
             valueExpression: "$view.scale",
@@ -233,14 +234,6 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
         container: 'map'
     });
 
-    watchUtils.watch(data_map, "loaded", function() {
-        console.log('a');
-    });
-
-    watchUtils.watch(data_map, "renderer", function() {
-        console.log('b');
-    });
-
     //Filters
     view.whenLayerView(data_map).then((layerView) => {
 
@@ -268,16 +261,19 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
             if (props != $('#dropdown').prop('selectedItems')) {
                 props = $('#dropdown').prop('selectedItems');
                 current_focus = $(props[0]).attr('choice')
+                map.layers = []
 
                 if (current_focus == 'Results') {
-                    buildings.opacity = 1;
-                    data_map.blendMode = 'source-in';
                     data_map.renderer = results_renderer;
+                    data_map.blendMode = 'source-in';
                 } else if (current_focus == 'Swing') {
-                    buildings.opacity = 0;
-                    data_map.blendMode = 'normal';
                     data_map.renderer = swing_renderer;
+                    data_map.blendMode = 'normal';
                 }
+                setTimeout(function() {
+                    map.layers = [group];
+                }, 500);
+
             }
         });
     });
