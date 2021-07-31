@@ -1,5 +1,5 @@
 //Loads in Calcite, JQuery, common styles
-import * as common from '../common.js'
+import '../common.js'
 
 //Loads in styles
 import './style.css';
@@ -20,6 +20,7 @@ import * as arrow from '../arrow.js';
 
 var legend;
 var current_constituency = 'Combined';
+const multi = .7;
 
 $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data) {
 
@@ -27,6 +28,7 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
 
     var data_map = new FeatureLayer({
         url: 'https://services5.arcgis.com/N6Nhpnxaedla81he/arcgis/rest/services/MK_Population/FeatureServer',
+        copyright: "ONS",
         title: "MK Population Change 2009-2019",
         maxScale: 0,
         renderer: {
@@ -53,20 +55,29 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
             visualVariables: [{
                 type: "size",
                 valueExpression: 'return Abs($feature.pop);',
-                valueExpressionTitle: "Shift in Percentage Points",
-                stops: [{
-                    value: 0,
-                    size: 5
-                }, {
-                    value: 15,
-                    size: 15
-                }, {
-                    value: 30,
-                    size: 20
-                }, {
-                    value: 100,
-                    size: 30
-                }]
+                valueExpressionTitle: "Shift in Percentage",
+                minDataValue: 0,
+                maxDataValue: 30,
+                maxSize: {
+                    type: "size",
+                    valueExpression: "$view.scale",
+                    stops: [
+                        { size: 40 * multi, value: 288895 },
+                        { size: 30 * multi, value: 2311162 },
+                        { size: 20 * multi, value: 18489297 },
+                        { size: 10 * multi, value: 147914381 }
+                    ]
+                },
+                minSize: {
+                    type: "size",
+                    valueExpression: "$view.scale",
+                    stops: [
+                        { size: 6 * multi, value: 288895 },
+                        { size: 4 * multi, value: 2311162 },
+                        { size: 3 * multi, value: 18489297 },
+                        { size: 2 * multi, value: 147914381 }
+                    ]
+                }
             }]
         }
     });
@@ -89,7 +100,6 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
 
     //Filters
     view.whenLayerView(data_map).then((layerView) => {
-        common.attribution($('.esri-attribution__sources'), ' | Ordnance Survey, ONS');
 
         generateRenderer(layerView);
 

@@ -1,5 +1,5 @@
 //Loads in Calcite, JQuery, common styles
-import * as common from '../common.js'
+import '../common.js'
 
 //Loads in styles
 import './style.css';
@@ -99,13 +99,15 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
 
     //Loads in layers
     const buildings = new FeatureLayer({
-        url: "https://services5.arcgis.com/N6Nhpnxaedla81he/arcgis/rest/services/MK_Buildings/FeatureServer"
+        url: "https://services5.arcgis.com/N6Nhpnxaedla81he/arcgis/rest/services/MK_Buildings/FeatureServer",
+        copyright: "Ordnance Survey",
     });
 
     const data_map = new FeatureLayer({
+        url: 'https://services5.arcgis.com/N6Nhpnxaedla81he/arcgis/rest/services/MK_Data/FeatureServer',
+        copyright: "Gov.UK, Office for Students",
         renderer: defaultRenderer,
         maxScale: 0,
-        url: 'https://services5.arcgis.com/N6Nhpnxaedla81he/arcgis/rest/services/MK_Data/FeatureServer'
     });
 
     //Groups and overlaps layers
@@ -132,7 +134,6 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
 
     //Filters
     view.whenLayerView(data_map).then((layerView) => {
-        common.attribution($('.esri-attribution__sources'), ' | Ordnance Survey, Gov.UK, Office for Students');
 
         generateRenderer(layerView);
 

@@ -13,14 +13,5 @@ customElements.define('calcite-dropdown-item', CalciteDropdownItem);
 import jQuery from "jquery";
 window.$ = window.jQuery = jQuery;
 
-export function attribution(element, string) {
-    $(element).text($(element).text() + string);
-    $('.esri-attribution__sources').bind("DOMSubtreeModified", function() {
-        if (!($(element).text().indexOf("|") >= 0)) {
-            $(element).text($(element).text() + string);
-        }
-    });
-}
-
 //Loads in common styles
 import './common.css'

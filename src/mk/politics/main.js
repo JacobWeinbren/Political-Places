@@ -1,5 +1,5 @@
 //Loads in Calcite, JQuery, common styles
-import * as common from '../common.js'
+import '../common.js'
 
 //Loads in styles
 import './style.css';
@@ -94,18 +94,18 @@ const results_renderer = {
                        width: 0
                    }
                }
-           }],
-           visualVariables: [{
-               type: "opacity",
-               valueExpression: 'return $feature.majority;',
-               valueExpressionTitle: "Majority in Percentage Points",
-               stops: [
-                   { value: 0, opacity: .3 },
-                   { value: 5, opacity: .75 },
-                   { value: 10, opacity: 1 }
-               ]
            }*/
-    ]
+    ],
+    visualVariables: [{
+        type: "opacity",
+        valueExpression: 'return $feature.majority;',
+        valueExpressionTitle: "Majority in Percentage Points",
+        stops: [
+            { value: 0, opacity: .3 },
+            { value: 5, opacity: .75 },
+            { value: 10, opacity: 1 }
+        ]
+    }]
 }
 
 const swing_renderer = {
@@ -199,11 +199,13 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
 
     //Loads in layers
     const buildings = new FeatureLayer({
-        url: "https://services5.arcgis.com/N6Nhpnxaedla81he/arcgis/rest/services/Buildings_UK/FeatureServer"
+        url: "https://services5.arcgis.com/N6Nhpnxaedla81he/arcgis/rest/services/MK_Buildings/FeatureServer",
+        copyright: "Ordnance Survey",
     });
 
     var data_map = new FeatureLayer({
-        url: 'https://services5.arcgis.com/N6Nhpnxaedla81he/arcgis/rest/services/UK_LE_2021/FeatureServer',
+        url: 'https://services5.arcgis.com/N6Nhpnxaedla81he/arcgis/rest/services/MK_Politics/FeatureServer',
+        copyright: "Britain Elects",
         title: "2021 Local Election Results - Britain Elects",
         maxScale: 0,
         renderer: results_renderer
@@ -224,16 +226,15 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
     var view = new MapView({
         map: map,
         zoom: 11,
-        /*constraints: {
+        constraints: {
             minZoom: 10
-        },*/
+        },
         center: [-0.75, 52.04],
         container: 'map'
     });
 
     //Filters
     view.whenLayerView(data_map).then((layerView) => {
-        common.attribution($('.esri-attribution__sources'), ' | Ordnance Survey, Britain Elects');
 
         //Add dropdown
         view.ui.add('dropdown', 'top-right');
