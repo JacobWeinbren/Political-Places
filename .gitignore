@@ -10,3 +10,4 @@ dist/**/**/assets
 dist/**/**/chunks
 package-lock.json
 *.pyc
+assets

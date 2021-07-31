@@ -8,7 +8,7 @@ const parsed = parse(
     import.meta.url
 );
 
-console.log(parsed.origin + '/dist/mk/');
+console.log(parsed.origin + '/assets/');
 
 setAssetPath(parsed.origin + '/dist/mk/');
 

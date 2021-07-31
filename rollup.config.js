@@ -28,7 +28,7 @@ function mk_plugins() {
         copy({
             targets: [{
                 src: path.resolve('node_modules/@esri/calcite-components/dist/calcite/assets'),
-                dest: path.resolve('dist/mk')
+                dest: path.resolve('assets')
             }]
         }),
         resolve(),
