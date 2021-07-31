@@ -10,7 +10,7 @@ const parsed = parse(
 
 console.log(parsed.origin + '/assets/');
 
-setAssetPath(parsed.origin + '/dist/mk/');
+setAssetPath(parsed.origin + '/assets/');
 
 customElements.define('calcite-button', CalciteButton);
 customElements.define('calcite-dropdown', CalciteDropdown);
