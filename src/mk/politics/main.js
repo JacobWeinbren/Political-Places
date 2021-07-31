@@ -265,9 +265,11 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
                 if (current_focus == 'Results') {
                     data_map.renderer = results_renderer;
                     data_map.blendMode = 'source-in';
+                    buildings.visible = true;
                 } else if (current_focus == 'Swing') {
                     data_map.renderer = swing_renderer;
                     data_map.blendMode = 'normal';
+                    buildings.visible = false;
                 }
             }
         });
