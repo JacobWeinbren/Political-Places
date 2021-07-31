@@ -8,7 +8,7 @@ const parsed = parse(
     import.meta.url
 );
 
-setAssetPath(parsed.origin + '/dist/mk/');
+setAssetPath(parsed.origin + '/mk/');
 
 customElements.define('calcite-button', CalciteButton);
 customElements.define('calcite-dropdown', CalciteDropdown);
