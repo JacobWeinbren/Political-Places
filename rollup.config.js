@@ -9,7 +9,6 @@ import json from '@rollup/plugin-json';
 import replace from '@rollup/plugin-replace';
 
 const production = !process.env.ROLLUP_WATCH;
-//const production = true;
 
 //MK Template and inputs
 var mk_inputs = ['src/mk/mob_dep/main.js', 'src/mk/classification/main.js', 'src/mk/population/main.js', 'src/mk/politics/main.js', ]
@@ -27,9 +26,8 @@ function mk_plugins() {
     return [
         commonjs(),
         replace({
-            values: {
-                'process.env.ASSET': production ? '/mk/' : '/mk/dist/'
-            }
+            preventAssignment: true,
+            __assetLocation__: production ? '/mk/' : '/mk/dist/'
         }),
         copy({
             targets: [{

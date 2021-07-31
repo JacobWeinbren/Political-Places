@@ -233,6 +233,14 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
         container: 'map'
     });
 
+    watchUtils.watch(data_map, "loaded", function() {
+        console.log('a');
+    });
+
+    watchUtils.watch(data_map, "renderer", function() {
+        console.log('b');
+    });
+
     //Filters
     view.whenLayerView(data_map).then((layerView) => {
 
