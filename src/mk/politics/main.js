@@ -24,37 +24,88 @@ const results_renderer = {
     field: "winner",
     valueExpressionTitle: "Winning Party",
     uniqueValueInfos: [{
-        value: "Lab",
-        label: "Labour",
-        symbol: {
-            type: "simple-fill",
-            color: "#E4003B"
-        }
-    }, {
-        value: "Con",
-        label: "Conservative",
-        symbol: {
-            type: "simple-fill",
-            color: "#0087DC"
-        }
-    }, {
-        value: "LDem",
-        label: "Liberal Democrats",
-        symbol: {
-            type: "simple-fill",
-            color: "#FAA61A"
-        }
-    }],
-    visualVariables: [{
-        type: "opacity",
-        valueExpression: 'return $feature.majority;',
-        valueExpressionTitle: "Majority in Percentage Points",
-        stops: [
-            { value: 0, opacity: .3 },
-            { value: 5, opacity: .75 },
-            { value: 10, opacity: 1 }
-        ]
-    }]
+            value: "Lab",
+            label: "Labour",
+            symbol: {
+                type: "simple-fill",
+                color: "#E4003B",
+                outline: {
+                    width: 0
+                }
+            }
+        }, {
+            value: "Con",
+            label: "Conservative",
+            symbol: {
+                type: "simple-fill",
+                color: "#0087DC",
+                outline: {
+                    width: 0
+                }
+            }
+        }, {
+            value: "LDem",
+            label: "Liberal Democrats",
+            symbol: {
+                type: "simple-fill",
+                color: "#FAA61A",
+                outline: {
+                    width: 0
+                }
+            }
+        },
+        /*{
+               value: "Grn",
+               label: "Green",
+               symbol: {
+                   type: "simple-fill",
+                   color: "#6AB023",
+                   outline: {
+                       width: 0
+                   }
+               }
+           }, {
+               value: "Ind",
+               label: "Independent",
+               symbol: {
+                   type: "simple-fill",
+                   color: "grey",
+                   outline: {
+                       width: 0
+                   }
+               }
+           }, {
+               value: "IndGrp",
+               label: "Independent Group",
+               symbol: {
+                   type: "simple-fill",
+                   color: "grey",
+                   outline: {
+                       width: 0
+                   }
+               }
+           }, {
+               value: "ResAss",
+               label: "Resident Association",
+               symbol: {
+                   type: "simple-fill",
+                   color: "grey",
+                   outline: {
+                       width: 0
+                   }
+               }
+           }],
+           visualVariables: [{
+               type: "opacity",
+               valueExpression: 'return $feature.majority;',
+               valueExpressionTitle: "Majority in Percentage Points",
+               stops: [
+                   { value: 0, opacity: .3 },
+                   { value: 5, opacity: .75 },
+                   { value: 10, opacity: 1 }
+               ]
+           }*/
+    ]
 }
 
 const swing_renderer = {
@@ -62,41 +113,83 @@ const swing_renderer = {
     field: "swing_party",
     valueExpressionTitle: "Swing Towards",
     uniqueValueInfos: [{
-        value: "Lab",
-        label: "Labour",
-        symbol: arrow.createArrowSymbol(
-            new Color("#E4003B"),
-            45
-        )
-    }, {
-        value: "Con",
-        label: "Conservative",
-        symbol: arrow.createArrowSymbol(
-            new Color("#0087DC"),
-            -45
-        )
-    }, {
-        value: "LDem",
-        label: "Liberal Democrats",
-        symbol: arrow.createArrowSymbol(
-            new Color("#FAA61A"),
-            0
-        )
-    }],
+            value: "Lab",
+            label: "Labour",
+            symbol: arrow.createArrowSymbol(
+                new Color("#E4003B"),
+                45
+            )
+        }, {
+            value: "Con",
+            label: "Conservative",
+            symbol: arrow.createArrowSymbol(
+                new Color("#0087DC"),
+                -45
+            )
+        }, {
+            value: "LDem",
+            label: "Liberal Democrats",
+            symbol: arrow.createArrowSymbol(
+                new Color("#FAA61A"),
+                0
+            )
+        },
+        /* {
+                value: "Grn",
+                label: "Green",
+       d         symbol: arrow.createArrowSymbol(
+                    new Color("#6AB023"),
+                    45
+                )
+            }, {
+                value: "Ind",
+                label: "Independent",
+                symbol: arrow.createArrowSymbol(
+                    new Color("grey"),
+                    0
+                )
+            }, {
+                value: "IndGrp",
+                label: "Independent Group",
+                symbol: arrow.createArrowSymbol(
+                    new Color("grey"),
+                    0
+                )
+            }, {
+                value: "ResAss",
+                label: "Resident Association",
+                symbol: arrow.createArrowSymbol(
+                    new Color("grey"),
+                    0
+                )
+            }*/
+    ],
     visualVariables: [{
         type: "size",
         valueExpression: 'return $feature.swing;',
         valueExpressionTitle: "Swing in Percentage Points",
-        stops: [{
-            value: 0,
-            size: 0
-        }, {
-            value: 5,
-            size: 20
-        }, {
-            value: 20,
-            size: 40
-        }]
+        minDataValue: 0,
+        maxDataValue: 40,
+        maxSize: {
+            type: "size",
+            valueExpression: "$view.scale",
+            stops: [
+                { size: 40, value: 288895 },
+                { size: 30, value: 2311162 },
+                { size: 20, value: 18489297 },
+                { size: 10, value: 147914381 }
+            ]
+        },
+        minSize: {
+            type: "size",
+            valueExpression: "$view.scale",
+            stops: [
+                { size: 6, value: 288895 },
+                { size: 4, value: 2311162 },
+                { size: 3, value: 18489297 },
+                { size: 2, value: 147914381 }
+            ]
+        }
     }]
 }
 
@@ -106,11 +199,11 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
 
     //Loads in layers
     const buildings = new FeatureLayer({
-        url: "https://services5.arcgis.com/N6Nhpnxaedla81he/arcgis/rest/services/MK_Buildings/FeatureServer"
+        url: "https://services5.arcgis.com/N6Nhpnxaedla81he/arcgis/rest/services/Buildings_UK/FeatureServer"
     });
 
     var data_map = new FeatureLayer({
-        url: 'https://services5.arcgis.com/N6Nhpnxaedla81he/arcgis/rest/services/MK_Politics/FeatureServer',
+        url: 'https://services5.arcgis.com/N6Nhpnxaedla81he/arcgis/rest/services/UK_LE_2021/FeatureServer',
         title: "2021 Local Election Results - Britain Elects",
         maxScale: 0,
         renderer: results_renderer
@@ -131,16 +224,16 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
     var view = new MapView({
         map: map,
         zoom: 11,
-        constraints: {
+        /*constraints: {
             minZoom: 10
-        },
+        },*/
         center: [-0.75, 52.04],
         container: 'map'
     });
 
     //Filters
     view.whenLayerView(data_map).then((layerView) => {
-        common.attribution($('.esri-attribution__sources')[0], ' | Ordnance Survey, Britain Elects');
+        common.attribution($('.esri-attribution__sources'), ' | Ordnance Survey, Britain Elects');
 
         //Add dropdown
         view.ui.add('dropdown', 'top-right');

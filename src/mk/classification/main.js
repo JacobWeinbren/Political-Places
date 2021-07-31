@@ -262,7 +262,7 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
 
     //Loads in layers
     const buildings = new FeatureLayer({
-        url: "https://services5.arcgis.com/N6Nhpnxaedla81he/arcgis/rest/services/MK_Buildings/FeatureServer/"
+        url: "https://services5.arcgis.com/N6Nhpnxaedla81he/arcgis/rest/services/MK_Buildings/FeatureServer"
     });
 
     const data_map = new FeatureLayer({
@@ -296,7 +296,7 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
     //Show chart
     view.whenLayerView(data_map).then((layerView) => {
 
-        attribution($('.esri-attribution__sources')[0], ' | Ordnance Survey, ONS');
+        common.attribution($('.esri-attribution__sources'), ' | Ordnance Survey, ONS');
 
         generateRenderer(layerView);
 

@@ -89,7 +89,7 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
 
     //Filters
     view.whenLayerView(data_map).then((layerView) => {
-        common.attribution($('.esri-attribution__sources')[0], ' | Ordnance Survey, ONS');
+        common.attribution($('.esri-attribution__sources'), ' | Ordnance Survey, ONS');
 
         generateRenderer(layerView);
 

@@ -40,6 +40,7 @@ def eng_politics(injson, file, outjson):
 
 	regex = re.compile('[^a-zA-Z]')
 	parties = ['Con', 'Lab', 'LDem', 'UKIP', 'Grn', 'SNP', 'PC', 'Ind', 'IndGrp', 'Reg', 'ResAss', 'Oth']
+	to_delete = []
 
 	#Add data to features
 	for index, feature in enumerate(features['features']):
@@ -55,7 +56,10 @@ def eng_politics(injson, file, outjson):
 			'majority': None,
 			'swing': None,
 			'swing_party': None,
+			'name': None
 		}
+
+		found = False
 
 		for item in data:
 			#Get name of ward in data
@@ -64,6 +68,7 @@ def eng_politics(injson, file, outjson):
 
 			#In the array
 			if ward_name == feature_name:
+				found = True
 				#As percentage points
 				results = {}
 				changes = {}
@@ -89,6 +94,12 @@ def eng_politics(injson, file, outjson):
 				features_copy['features'][index]['properties']['majority'] = round(majority, 1)
 				features_copy['features'][index]['properties']['swing'] = round(swing, 1)
 				features_copy['features'][index]['properties']['swing_party'] = swing_party
+				features_copy['features'][index]['properties']['name'] = ward_name
+
+		if not found:
+			to_delete.append(index)
+
+	features_copy['features'] = [i for j, i in enumerate(features_copy['features']) if j not in to_delete]
 
 	print("Writing to", outjson)
 	with open(outjson, "w") as file:
