@@ -261,7 +261,6 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
             if (props != $('#dropdown').prop('selectedItems')) {
                 props = $('#dropdown').prop('selectedItems');
                 current_focus = $(props[0]).attr('choice')
-                map.layers = []
 
                 if (current_focus == 'Results') {
                     data_map.renderer = results_renderer;
@@ -270,10 +269,6 @@ $.getJSON('https://ancient-dawn-46f2.jacobweinbren.workers.dev/', function(data)
                     data_map.renderer = swing_renderer;
                     data_map.blendMode = 'normal';
                 }
-                setTimeout(function() {
-                    map.layers = [group];
-                }, 500);
-
             }
         });
     });
