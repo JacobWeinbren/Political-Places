@@ -1,6 +1,7 @@
 import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import { terser } from 'rollup-plugin-terser';
+import copy from 'rollup-plugin-copy';
 import postcss from 'rollup-plugin-postcss';
 import deepcopy from 'deepcopy';
 import path from 'path';
@@ -24,6 +25,12 @@ var mk_default = {
 function mk_plugins() {
     return [
         commonjs(),
+        copy({
+            targets: [{
+                src: path.resolve('node_modules/@esri/calcite-components/dist/calcite/assets'),
+                dest: path.resolve('dist/mk')
+            }]
+        }),
         resolve(),
         postcss({
             extensions: ['.css'],
