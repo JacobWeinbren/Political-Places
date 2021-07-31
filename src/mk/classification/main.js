@@ -4,7 +4,7 @@ import '../common.js'
 //Loads in styles
 import './style.css';
 
-import { bulletPoint16 } from "../assets/calcite-icon/bulletPoint16.js";
+import { listBullet16 } from "../assets/calcite-icon/listBullet16.js";
 import { chevronDown16 } from "../assets/calcite-icon/chevronDown16.js";
 import { squareArea16 } from "../assets/calcite-icon/squareArea16.js";
 
