@@ -4,9 +4,9 @@ import '../common.js'
 //Loads in styles
 import './style.css';
 
-import { bulletPoint16 } from "@esri/calcite-ui-icons/js/bulletPoint16.js";
-import { chevronDown16 } from "@esri/calcite-ui-icons/js/chevronDown16.js";
-import { squareArea16 } from "@esri/calcite-ui-icons/js/squareArea16.js";
+import { bulletPoint16 } from "../assets/calcite-icon/bulletPoint16.js";
+import { chevronDown16 } from "../assets/calcite-icon/chevronDown16.js";
+import { squareArea16 } from "../assets/calcite-icon/squareArea16.js";
 
 //Loads in Esri
 import esriConfig from '@arcgis/core/config';
