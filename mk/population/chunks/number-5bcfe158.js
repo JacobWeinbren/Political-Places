@@ -1,0 +1,1 @@
+const n=new Float32Array(1);function r(n){return[255&n,(65280&n)>>>8,(16711680&n)>>>16,(4278190080&n)>>>24]}function t(n,r){return 65535&n|r<<16}function e(n,r,t,e){return 255&n|(255&r)<<8|(255&t)<<16|e<<24}new Uint32Array(n.buffer);export{r as M,t as w,e as x};

@@ -1,0 +1,1 @@
+const n=Number.POSITIVE_INFINITY,t=Math.PI,r=2*t,u=128/t,o=t/180,e=1/Math.LN2;function I(n,t){return(n%=t)>=0?n:n+t}function c(n){return I(n*u,256)}function f(n){return Math.log(n)*e}function i(n,t,r){return n*(1-r)+t*r}export{f as P,I as a,i as b,o as f,c as h,n,r,t};

@@ -1,0 +1,1 @@
+function i(i){return i&&"getAtOrigin"in i&&"originOf"in i}function n(n){n&&n.writtenProperties&&n.writtenProperties.forEach((n=>{const r=n.target;n.newOrigin&&n.oldOrigin!==n.newOrigin&&i(r)&&r.updateOrigin(n.propName,n.newOrigin)}))}export{i,n as r};
